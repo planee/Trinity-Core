@@ -29,23 +29,17 @@ enum Yells
     SAY_HARDMODE_ON                             = 1,
     SAY_MKII_ACTIVATE                           = 2,
     SAY_MKII_SLAY                               = 3,
-    SAY_MKII_SLAY_2                               = 17,
     SAY_MKII_DEATH                              = 4,
     SAY_VX001_ACTIVATE                          = 5,
     SAY_VX001_SLAY                              = 6,
     SAY_VX001_DEATH                             = 7,
     SAY_AERIAL_ACTIVATE                         = 8,
     SAY_AERIAL_SLAY                             = 9,
-    SAY_AERIAL_SLAY_2                           = 10,
-    SAY_AERIAL_DEATH                            = 11,
-    SAY_V07TRON_ACTIVATE                        = 12,
-    SAY_V07TRON_SLAY                            = 13,
-    SAY_V07TRON_SLAY_2                          = 14,
-    SAY_V07TRON_DEATH                           = 15,
-    SAY_VX001_SLAY_1                            = 18,
-    SAY_VX001_SLAY_2                            = 19,
-    
-    SAY_BERSERK                                 = 16
+    SAY_AERIAL_DEATH                            = 10,
+    SAY_V07TRON_ACTIVATE                        = 11,
+    SAY_V07TRON_SLAY                            = 12,
+    SAY_V07TRON_DEATH                           = 13,
+    SAY_BERSERK                                 = 14
 };
 
 #define EMOTE_LEVIATHAN                         "Leviathan MK II begins to cast Plasma Blast!"
@@ -801,9 +795,9 @@ public:
                     if (Creature* Mimiron = me->GetCreature(*me, instance->GetData64(BOSS_MIMIRON)))
                     {
                         if (phase == PHASE_LEVIATHAN_SOLO)
-                            Talk(RAND(SAY_MKII_SLAY, SAY_MKII_SLAY_2));
+                            Talk(SAY_MKII_SLAY);
                         else
-                            Talk(RAND(SAY_V07TRON_SLAY, SAY_V07TRON_SLAY_2));
+                            Talk(SAY_V07TRON_SLAY);
                     }
         }
 
@@ -1131,9 +1125,9 @@ public:
                     if (Creature* Mimiron = me->GetCreature(*me, instance->GetData64(BOSS_MIMIRON)))
                     {
                         if (phase == PHASE_VX001_SOLO)
-                            Talk(RAND(SAY_VX001_SLAY_1, SAY_VX001_SLAY_2));
+                            Talk(SAY_VX001_SLAY);
                         else
-                            Talk(RAND(SAY_V07TRON_SLAY, SAY_V07TRON_SLAY_2));
+                            Talk(SAY_V07TRON_SLAY);
                     }
         }
 
@@ -1455,9 +1449,9 @@ public:
                     if (Creature* Mimiron = me->GetCreature(*me, instance->GetData64(BOSS_MIMIRON)))
                     {
                         if (phase == PHASE_AERIAL_SOLO)
-                            Talk(RAND(SAY_AERIAL_SLAY, SAY_AERIAL_SLAY_2));
+                            Talk(SAY_AERIAL_SLAY);
                         else
-                            Talk(RAND(SAY_V07TRON_SLAY, SAY_V07TRON_SLAY_2));
+                            Talk(SAY_V07TRON_SLAY);
                     }
         }
 

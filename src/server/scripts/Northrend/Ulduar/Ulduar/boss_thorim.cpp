@@ -64,13 +64,11 @@ enum Events
 enum Yells
 {
     SAY_AGGRO                                   = 0,
-	SAY_AGGRO_2									= 15,
     SAY_SPECIAL_1                               = 1,
     SAY_SPECIAL_2                               = 2,
     SAY_SPECIAL_3                               = 3,
     SAY_JUMPDOWN                                = 4,
     SAY_SLAY                                    = 5,
-	SAY_SLAY_2									= 16,
     SAY_BERSERK                                 = 6,
     SAY_WIPE                                    = 7,
     SAY_DEATH                                   = 8,
@@ -347,7 +345,7 @@ public:
         void KilledUnit(Unit* /*victim*/)
         {
             if (!(rand()%5))
-                Talk(RAND(SAY_SLAY, SAY_SLAY_2));
+                Talk(SAY_SLAY);
         }
 
         void EncounterIsDone()
@@ -464,7 +462,7 @@ public:
                     switch (eventId)
                     {
                         case EVENT_SAY_AGGRO_2:
-                            Talk(SAY_AGGRO_2);
+                            Talk(SAY_AGGRO);
                             break;
                         case EVENT_STORMHAMMER:
                             DoCast(SPELL_STORMHAMMER);

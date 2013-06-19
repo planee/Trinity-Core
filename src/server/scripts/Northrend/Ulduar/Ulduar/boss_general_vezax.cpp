@@ -21,13 +21,12 @@
 
 enum Yells
 {
-    SAY_AGGRO                                   = 0,
-    SAY_SLAY_1                                  = 1,
-    SAY_SLAY_2                                  = 2,
-    SAY_KITE                                    = 3,
-    SAY_DEATH                                   = 4,
-    SAY_BERSERK                                 = 5,
-    SAY_HARDMODE_ON                             = 6
+    SAY_AGGRO                                    = 0,
+    SAY_SLAY                                     = 1,
+    SAY_SURGE_OF_DARKNESS                        = 2,
+    SAY_DEATH                                    = 3,
+    SAY_BERSERK                                  = 4,
+    SAY_HARDMODE                                 = 5,
 };
 
 enum Emotes
@@ -161,7 +160,7 @@ class boss_general_vezax : public CreatureScript
                         _guidSaronitAnimus = summoned->GetGUID();
                         _animusSummoned = true;
                         events.CancelEvent(EVENT_SEARING_FLAMES);
-                        Talk(SAY_HARDMODE_ON);
+                        Talk(SAY_HARDMODE);
                         Talk(EMOTE_BARRIER);
                         me->InterruptNonMeleeSpells(false);
                         DoCast(SPELL_SARONIT_BARRIER);
@@ -176,7 +175,7 @@ class boss_general_vezax : public CreatureScript
             void KilledUnit(Unit* /*who*/)
             {
                 if (urand(0, 5) == 0)
-                    Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                    Talk(SAY_SLAY);
             }
 
             void JustDied(Unit* /*who*/)
@@ -274,7 +273,7 @@ class boss_general_vezax : public CreatureScript
                             break;
                         case EVENT_SURGE_OF_DARKNESS:
                             DoCast(me, SPELL_SURGE_OF_DARKNESS);
-                            Talk(SAY_KITE);
+                            Talk(SAY_SURGE_OF_DARKNESS);
                             Talk(EMOTE_SURGE_OF_DARKNESS);
                             events.ScheduleEvent(EVENT_SURGE_OF_DARKNESS, 63*IN_MILLISECONDS);
                             break;

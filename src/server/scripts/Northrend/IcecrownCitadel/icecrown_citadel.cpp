@@ -2357,20 +2357,6 @@ class npc_sindragosas_ward : public CreatureScript
         }
 };
 
-class at_icc_start_sindragosa_gauntlet : public AreaTriggerScript
-{
-    public:
-        at_icc_start_sindragosa_gauntlet() : AreaTriggerScript("at_icc_start_sindragosa_gauntlet") { }
-
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
-        {
-            if (InstanceScript* instance = player->GetInstanceScript())
-                if (Creature* ward = ObjectAccessor::GetCreature(*player, instance->GetData64(DATA_SINDRAGOSA_GAUNTLET)))
-                    ward->AI()->DoAction(ACTION_START_GAUNTLET);
-            return true;
-        }
-};
-
 
 void AddSC_icecrown_citadel()
 {
@@ -2400,5 +2386,4 @@ void AddSC_icecrown_citadel()
     new at_icc_start_blood_quickening();
     new at_icc_start_frostwing_gauntlet();
     new npc_sindragosas_ward();
-    new at_icc_start_sindragosa_gauntlet();
 }

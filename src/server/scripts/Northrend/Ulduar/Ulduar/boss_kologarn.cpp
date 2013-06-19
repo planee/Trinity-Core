@@ -75,15 +75,15 @@ enum Events
 
 enum Yells
 {
-    SAY_AGGRO                                   = 0,
-    SAY_SLAY_1                                  = 1,
-    SAY_SLAY_2                                  = 2,
-    SAY_LEFT_ARM_GONE                           = 3,
-    SAY_RIGHT_ARM_GONE                          = 4,
-    SAY_SHOCKWAVE                               = 5,
-    SAY_GRAB_PLAYER                             = 6,
-    SAY_DEATH                                   = 7,
-    SAY_BERSERK                                 = 8
+    SAY_AGGRO                               = 0,
+    SAY_SLAY                                = 1,
+    SAY_LEFT_ARM_GONE                       = 2,
+    SAY_RIGHT_ARM_GONE                      = 3,
+    SAY_SHOCKWAVE                           = 4,
+    SAY_GRAB_PLAYER                         = 5,
+    SAY_DEATH                               = 6,
+    SAY_BERSERK                             = 7,
+    EMOTE_STONE_GRIP                        = 8
 };
 
 class boss_kologarn : public CreatureScript
@@ -147,7 +147,7 @@ class boss_kologarn : public CreatureScript
 
             void KilledUnit(Unit* /*who*/)
             {
-                Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                Talk(SAY_SLAY);
             }
 
             void PassengerBoarded(Unit* who, int8 /*seatId*/, bool apply)

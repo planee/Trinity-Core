@@ -105,11 +105,14 @@ enum Yells
     SAY_HEART_OPENED                            = 1,
     SAY_HEART_CLOSED                            = 2,
     SAY_TYMPANIC_TANTRUM                        = 3,
-    SAY_SLAY_1                                  = 4,
-    SAY_SLAY_2                                  = 5,
-    SAY_BERSERK                                 = 6,
-    SAY_DEATH                                   = 7,
-    SAY_SUMMON                                  = 8
+    SAY_SLAY                                    = 4,
+    SAY_BERSERK                                 = 5,
+    SAY_DEATH                                   = 6,
+    SAY_SUMMON                                  = 7,
+    EMOTE_HEART_OPENED                          = 8,
+    EMOTE_HEART_CLOSED                          = 9,
+    EMOTE_TYMPANIC_TANTRUM                      = 10,
+    EMOTE_SCRAPBOT                              = 11
 };
 
 enum
@@ -245,7 +248,7 @@ class boss_xt002 : public CreatureScript
 
             void KilledUnit(Unit* /*victim*/)
             {
-                Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                Talk(SAY_SLAY);
             }
 
             void JustDied(Unit* /*victim*/)

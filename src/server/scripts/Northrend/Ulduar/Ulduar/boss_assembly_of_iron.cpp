@@ -96,30 +96,28 @@ enum Events
 enum Yells
 {
     SAY_STEELBREAKER_AGGRO                      = 0,
-    SAY_STEELBREAKER_SLAY_1                     = 1,
-    SAY_STEELBREAKER_SLAY_2                     = 2,
-    SAY_STEELBREAKER_POWER                      = 3,
-    SAY_STEELBREAKER_DEATH_1                    = 4,
-    SAY_STEELBREAKER_DEATH_2                    = 5,
-    SAY_STEELBREAKER_BERSERK                    = 6,
+    SAY_STEELBREAKER_SLAY                       = 1,
+    SAY_STEELBREAKER_POWER                      = 2,
+    SAY_STEELBREAKER_DEATH                      = 3,
+    SAY_STEELBREAKER_ENCOUNTER_DEFEATED         = 4,
+    SAY_STEELBREAKER_BERSERK                    = 5,
 
-    SAY_MOLGEIM_AGGRO                           = 7,
-    SAY_MOLGEIM_SLAY_1                          = 8,
-    SAY_MOLGEIM_SLAY_2                          = 9,
-    SAY_MOLGEIM_RUNE_DEATH                      = 10,
-    SAY_MOLGEIM_SUMMON                          = 11,
-    SAY_MOLGEIM_DEATH_1                         = 12,
-    SAY_MOLGEIM_DEATH_2                         = 13,
-    SAY_MOLGEIM_BERSERK                         = 14,
+    SAY_MOLGEIM_AGGRO                           = 0,
+    SAY_MOLGEIM_SLAY                            = 1,
+    SAY_MOLGEIM_RUNE_DEATH                      = 2,
+    SAY_MOLGEIM_SUMMON                          = 3,
+    SAY_MOLGEIM_DEATH                           = 4,
+    SAY_MOLGEIM_ENCOUNTER_DEFEATED              = 5,
+    SAY_MOLGEIM_BERSERK                         = 6,
 
-    SAY_BRUNDIR_AGGRO                           = 15,
-    SAY_BRUNDIR_SLAY_1                          = 16,
-    SAY_BRUNDIR_SLAY_2                          = 17,
-    SAY_BRUNDIR_SPECIAL                         = 18,
-    SAY_BRUNDIR_FLIGHT                          = 19,
-    SAY_BRUNDIR_DEATH_1                         = 20,
-    SAY_BRUNDIR_DEATH_2                         = 21,
-    SAY_BRUNDIR_BERSERK                         = 22
+    SAY_BRUNDIR_AGGRO                           = 0,
+    SAY_BRUNDIR_SLAY                            = 1,
+    SAY_BRUNDIR_SPECIAL                         = 2,
+    SAY_BRUNDIR_FLIGHT                          = 3,
+    SAY_BRUNDIR_DEATH                           = 4,
+    SAY_BRUNDIR_ENCOUNTER_DEFEATED              = 5,
+    SAY_BRUNDIR_BERSERK                         = 6,
+    EMOTE_BRUNDIR_OVERLOAD                      = 7,
 };
 
 enum MovePoints
@@ -300,7 +298,7 @@ class boss_steelbreaker : public CreatureScript
 
             void JustDied(Unit* /*killer*/)
             {
-                Talk(RAND(SAY_STEELBREAKER_DEATH_1, SAY_STEELBREAKER_DEATH_2));
+                Talk(SAY_STEELBREAKER_DEATH);
                 if (IsEncounterComplete(instance, me) && instance)
                 {
                     _JustDied();
@@ -310,7 +308,7 @@ class boss_steelbreaker : public CreatureScript
 
             void KilledUnit(Unit* who)
             {
-                Talk(RAND(SAY_STEELBREAKER_SLAY_1, SAY_STEELBREAKER_SLAY_2));
+                Talk(SAY_STEELBREAKER_SLAY);
             }
 
             void SpellHit(Unit* /*from*/, SpellInfo const* spell)
@@ -583,7 +581,7 @@ class boss_runemaster_molgeim : public CreatureScript
 
             void JustDied(Unit* /*killer*/)
             {
-                Talk(RAND(SAY_MOLGEIM_DEATH_1, SAY_MOLGEIM_DEATH_2));
+                Talk(SAY_MOLGEIM_DEATH);
                 if (IsEncounterComplete(instance, me) && instance)
                 {
                     _JustDied();
@@ -598,7 +596,7 @@ class boss_runemaster_molgeim : public CreatureScript
 
             void KilledUnit(Unit* /*who*/)
             {
-                Talk(RAND(SAY_MOLGEIM_SLAY_1, SAY_MOLGEIM_SLAY_2));
+                Talk(SAY_MOLGEIM_SLAY);
             }
 
             void SpellHit(Unit* /*from*/, SpellInfo const* spell)
@@ -903,7 +901,7 @@ class boss_stormcaller_brundir : public CreatureScript
 
             void JustDied(Unit* /*killer*/)
             {
-                Talk(RAND(SAY_BRUNDIR_DEATH_1, SAY_BRUNDIR_DEATH_2));
+                Talk(RAND(SAY_BRUNDIR_DEATH, SAY_BRUNDIR_ENCOUNTER_DEFEATED));
                 if (IsEncounterComplete(instance, me) && instance)
                 {
                     _JustDied();
@@ -913,7 +911,7 @@ class boss_stormcaller_brundir : public CreatureScript
 
             void KilledUnit(Unit* /*who*/)
             {
-                Talk(RAND(SAY_BRUNDIR_SLAY_1, SAY_BRUNDIR_SLAY_2));
+                Talk(SAY_BRUNDIR_SLAY);
             }
 
             void SpellHit(Unit* /*from*/, SpellInfo const* spell)

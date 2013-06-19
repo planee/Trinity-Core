@@ -140,22 +140,18 @@ enum Vehicles
 
 enum Yells
 {
-    SAY_AGGRO               = 0,
-    SAY_SLAY                = 1,
-    SAY_DEATH               = 2,
-    SAY_TARGET_1            = 3,
-    SAY_TARGET_2            = 4,
-    SAY_TARGET_3            = 5,
-    SAY_HARDMODE            = 6,
-    SAY_TOWER_NONE          = 7,
-    SAY_TOWER_FROST         = 8,
-    SAY_TOWER_FLAME         = 9,
-    SAY_TOWER_NATURE        = 10,
-    SAY_TOWER_STORM         = 11,
-    SAY_PLAYER_RIDING       = 12,
-    SAY_OVERLOAD_1          = 13,
-    SAY_OVERLOAD_2          = 14,
-    SAY_OVERLOAD_3          = 15
+    SAY_AGGRO            = 0,
+    SAY_SLAY             = 1,
+    SAY_DEATH            = 2,
+    SAY_TARGET           = 3,
+    SAY_HARDMODE         = 4,
+    SAY_TOWER_NONE       = 5,
+    SAY_TOWER_FROST      = 6,
+    SAY_TOWER_FLAME      = 7,
+    SAY_TOWER_NATURE     = 8,
+    SAY_TOWER_STORM      = 9,
+    SAY_PLAYER_RIDING    = 10,
+    SAY_OVERLOAD         = 11
 };
 
 enum AchievementData
@@ -417,7 +413,7 @@ class boss_flame_leviathan : public CreatureScript
                     switch (eventId)
                     {
                         case EVENT_PURSUE:
-                            Talk(RAND(SAY_TARGET_1, SAY_TARGET_2, SAY_TARGET_3));
+                            Talk(SAY_TARGET);
                             DoCast(SPELL_PURSUED);
                             Pursued = false;
                             events.ScheduleEvent(EVENT_PURSUE, 30*IN_MILLISECONDS);
@@ -435,7 +431,7 @@ class boss_flame_leviathan : public CreatureScript
                             events.ScheduleEvent(EVENT_SPEED, 15*IN_MILLISECONDS);
                             break;
                         case EVENT_SHUTDOWN:
-                            Talk(RAND(SAY_OVERLOAD_1, SAY_OVERLOAD_2, SAY_OVERLOAD_3));
+                            Talk(SAY_OVERLOAD);
                             me->MonsterTextEmote(EMOTE_OVERLOAD, 0, true);
                             me->GetMotionMaster()->Clear();
                             me->GetMotionMaster()->MoveIdle();

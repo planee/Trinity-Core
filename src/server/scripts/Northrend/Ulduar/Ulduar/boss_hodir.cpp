@@ -33,17 +33,14 @@
 enum HodirYells
 {
     SAY_AGGRO                                    = 0,
-    SAY_SLAY_1                                   = 1,
-    SAY_SLAY_2                                   = 2,
-    SAY_FLASH_FREEZE                             = 3,
-    SAY_STALACTITE                               = 4,
-    SAY_DEATH                                    = 5,
-    SAY_BERSERK                                  = 6,
-    SAY_YS_HELP                                  = 7,
-    SAY_HARD_MODE_FAILED                         = 8,
-
-    EMOTE_FREEZE                                 = 9,
-    EMOTE_BLOWS                                  = 10
+    SAY_SLAY                                     = 1,
+    SAY_FLASH_FREEZE                             = 2,
+    SAY_STALACTITE                               = 3,
+    SAY_DEATH                                    = 4,
+    SAY_BERSERK                                  = 5,
+    SAY_HARD_MODE_FAILED                         = 6,
+    EMOTE_FREEZE                                 = 7,
+    EMOTE_BLOWS                                  = 8
 };
 
 enum HodirSpells
@@ -349,7 +346,7 @@ class boss_hodir : public CreatureScript
             void KilledUnit(Unit* /*who*/)
             {
                 if (!urand(0, 3))
-                    Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                    Talk(SAY_SLAY);
             }
 
             void DamageTaken(Unit* /*who*/, uint32& damage)

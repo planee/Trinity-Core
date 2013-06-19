@@ -25,15 +25,13 @@
 enum Yells
 {
     SAY_AGGRO       = 0,
-    SAY_SLAY_1      = 1,
-    SAY_SLAY_2      = 2,
-    SAY_DEATH       = 3,
-    SAY_SUMMON      = 4,
-    SAY_SLAG_POT    = 5,
-    SAY_SCORCH_1    = 6,
-    SAY_SCORCH_2    = 7,
-    SAY_BERSERK     = 8,
-    EMOTE_JETS      = 9
+    SAY_SUMMON      = 1,
+    SAY_SLAG_POT    = 2,
+    SAY_SCORCH      = 3,
+    SAY_SLAY        = 4,
+    SAY_BERSERK     = 5,
+    SAY_DEATH       = 6,
+    EMOTE_JETS      = 7
 };
 
 enum Spells
@@ -165,7 +163,7 @@ class boss_ignis : public CreatureScript
             void KilledUnit(Unit* /*victim*/)
             {
                 if (!urand(0, 4))
-                    Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                    Talk(SAY_SLAY);
             }
 
             void JustSummoned(Creature* summon)
@@ -252,7 +250,7 @@ class boss_ignis : public CreatureScript
                             }
                             break;
                         case EVENT_SCORCH:
-                            Talk(RAND(SAY_SCORCH_1, SAY_SCORCH_2));
+                            Talk(SAY_SCORCH);
                             if (Unit* target = me->GetVictim())
                                 me->SummonCreature(NPC_GROUND_SCORCH, target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, 45000);
                             DoCast(SPELL_SCORCH);

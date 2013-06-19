@@ -650,7 +650,7 @@ class npc_herald_toc5 : public CreatureScript
             }
         }
 
-        void DoAction(int32 const action)
+        void DoAction(int32 action)
         {
             switch (action)
             {

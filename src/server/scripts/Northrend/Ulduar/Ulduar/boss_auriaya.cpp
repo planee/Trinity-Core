@@ -76,16 +76,12 @@ enum AuriayaEvents
 
 enum AuriayaYells
 {
-    // Yells
     SAY_AGGRO                                    = 0,
-    SAY_SLAY_1                                   = 1,
-    SAY_SLAY_2                                   = 2,
-    SAY_DEATH                                    = 3,
-    SAY_BERSERK                                  = 4,
-
-    // Emotes
-    EMOTE_FEAR                                   = 5,
-    EMOTE_DEFENDER                               = 6
+    SAY_SLAY                                     = 1,
+    SAY_DEATH                                    = 2,
+    SAY_BERSERK                                  = 3,
+    EMOTE_FEAR                                   = 4,
+    EMOTE_DEFENDER                               = 5
 };
 
 enum AuriayaActions
@@ -133,7 +129,7 @@ class boss_auriaya : public CreatureScript
 
             void KilledUnit(Unit* /*who*/)
             {
-                Talk(RAND(SAY_SLAY_1, SAY_SLAY_2));
+                Talk(SAY_SLAY);
             }
 
             void JustSummoned(Creature* summoned)

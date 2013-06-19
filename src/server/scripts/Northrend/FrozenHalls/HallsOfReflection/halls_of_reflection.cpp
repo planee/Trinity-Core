@@ -2210,7 +2210,7 @@ class at_hor_waves_restarter : public AreaTriggerScript
         }
 };
 
-class npc_queldelar : public CreatureScript
+/*class npc_queldelar : public CreatureScript
 {
 public:
     npc_queldelar() : CreatureScript("npc_queldelar") { }
@@ -2235,7 +2235,7 @@ public:
             }
         }
     };
-};
+};*/
 
 void AddSC_halls_of_reflection()
 {
@@ -2250,5 +2250,5 @@ void AddSC_halls_of_reflection()
     new at_hor_waves_restarter();
     new npc_frostworn_general();
     new npc_spiritual_reflection();
-    new npc_queldelar();
+    //new npc_queldelar();
 }
