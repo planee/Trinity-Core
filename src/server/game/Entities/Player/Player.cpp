@@ -523,11 +523,7 @@ inline void KillRewarder::_RewardXP(Player* player, float rate)
             AddPct(xp, (*i)->GetAmount());
 
         // 4.2.3. Give XP to player.
-        if(player->getLevel() >= 60 && !player->HasAchieved(1285) || player->getLevel() >= 60 && !player->HasAchieved(1283) || player->getLevel() >= 70 && !player->HasAchieved(1287) || player->getLevel() >= 70 && !player->HasAchieved(1286))
-        {
-        } else {
         player->GiveXP(xp, _victim, _groupRate);
-        }
         if (Pet* pet = player->GetPet())
             // 4.2.4. If player has pet, reward pet with XP (100% for single player, 50% for group case).
             pet->GivePetXP(_group ? xp / 2 : xp);
@@ -2993,8 +2989,15 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     // Favored experience increase END
 
     // XP to money conversion processed in Player::RewardQuest
-    if (level >= sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+    if (level == 60 && !HasAchieved(1283) || level == 60 && !HasAchieved(1285)) {
+        ModifyMoney(xp * 0.5);
         return;
+    } else if (level == 70 && !HasAchieved(1287) || level == 70 && !HasAchieved(1286)) {
+    ModifyMoney(xp * 0.5);
+        return;
+    } else if (level >= sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)) {
+        return;
+    }
 
     uint32 bonus_xp = 0;
     bool recruitAFriend = GetsRecruitAFriendBonus(true);
