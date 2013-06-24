@@ -1529,7 +1529,32 @@ void Player::Update(uint32 p_time)
 {
     if (!IsInWorld())
         return;
-
+    
+    int aitem=0;
+    ItemPosCountVec dest;
+    if(getLevel()<25){
+    aitem = 51999;
+    } else if(getLevel()>=25 && getLevel()<35){
+    aitem = 52000;
+    } else if(getLevel()>=35 && getLevel()<45){
+    aitem = 52001;
+    } else if(getLevel()>=45 && getLevel()<55){
+    aitem = 52002;
+    } else if(getLevel()>=55 && getLevel()<60){
+    aitem = 52003;
+    } else if(getLevel()>=60 && getLevel()<65){
+    aitem = 52004;
+    } else if(getLevel()>=65 && getLevel()<70){
+    aitem = 52005;
+    }
+    uint8 msg = CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, aitem, 1);
+    if(GetLevelPlayedTime()%300==0){
+        if (msg == EQUIP_ERR_OK)
+           Sleep(1000);
+           ChatHandler(GetSession()).SendSysMessage(5612);
+           StoreNewItem(dest, aitem, true);
+    }
+    
     // undelivered mail
     if (m_nextMailDelivereTime && m_nextMailDelivereTime <= time(NULL))
     {
