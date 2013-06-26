@@ -18,6 +18,7 @@
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
+#include "Player.h"
 #include "blackwing_lair.h"
 
 enum Emotes
@@ -70,7 +71,7 @@ public:
 
     struct boss_chromaggusAI : public BossAI
     {
-        boss_chromaggusAI(Creature* creature) : BossAI(creature, BOSS_CHOMAGGUS)
+        boss_chromaggusAI(Creature* creature) : BossAI(creature, BOSS_CHROMAGGUS)
         {
             // Select the 2 breaths that we are going to use until despawned
             // 5 possiblities for the first breath, 4 for the second, 20 total possiblites
@@ -182,7 +183,7 @@ public:
 
         void EnterCombat(Unit* /*who*/)
         {
-            if (instance && instance->GetBossState(BOSS_FLAMEGOR) != DONE) 
+            if (instance && instance->GetBossState(BOSS_FLAMEGOR) != DONE)
             {
                 EnterEvadeMode();
                 return;
@@ -190,10 +191,10 @@ public:
             _EnterCombat();
 
             events.ScheduleEvent(EVENT_SHIMMER, 0);
-            events.ScheduleEvent(EVENT_BREATH_1, 30*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_BREATH_2, 60*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_AFFLICTION, 10*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_FRENZY, 15*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_BREATH_1, 30000);
+            events.ScheduleEvent(EVENT_BREATH_2, 60000);
+            events.ScheduleEvent(EVENT_AFFLICTION, 10000);
+            events.ScheduleEvent(EVENT_FRENZY, 15000);
         }
 
         void UpdateAI(uint32 diff)
@@ -211,31 +212,27 @@ public:
                 switch (eventId)
                 {
                     case EVENT_SHIMMER:
-						{
-                        // Remove old vulnerabilty spell
-                        if (CurrentVurln_Spell)
-                            me->RemoveAurasDueToSpell(CurrentVurln_Spell);
+                        {
+                            // Remove old vulnerabilty spell
+                            if (CurrentVurln_Spell)
+                                me->RemoveAurasDueToSpell(CurrentVurln_Spell);
 
-                        // Cast new random vulnerabilty on self
-                        uint32 spell = RAND(SPELL_FIRE_VULNERABILITY, SPELL_FROST_VULNERABILITY, SPELL_SHADOW_VULNERABILITY, SPELL_NATURE_VULNERABILITY, SPELL_ARCANE_VULNERABILITY);
-                        DoCast(me, spell);
-                        CurrentVurln_Spell = spell;
-                        Talk(EMOTE_SHIMMER);
-                        events.ScheduleEvent(EVENT_SHIMMER, 45*IN_MILLISECONDS);
-						}
-                        break;
+                            // Cast new random vulnerabilty on self
+                            uint32 spell = RAND(SPELL_FIRE_VULNERABILITY, SPELL_FROST_VULNERABILITY, SPELL_SHADOW_VULNERABILITY, SPELL_NATURE_VULNERABILITY, SPELL_ARCANE_VULNERABILITY);
+                            DoCast(me, spell);
+                            CurrentVurln_Spell = spell;
+                            Talk(EMOTE_SHIMMER);
+                            events.ScheduleEvent(EVENT_SHIMMER, 45000);
+                            break;
+                        }
                     case EVENT_BREATH_1:
-						{
-                        DoCastVictim(Breath1_Spell);
-                        events.ScheduleEvent(EVENT_BREATH_1, 60*IN_MILLISECONDS);
-						}
-                        break;
+                            DoCastVictim(Breath1_Spell);
+                            events.ScheduleEvent(EVENT_BREATH_1, 60000);
+                            break;
                     case EVENT_BREATH_2:
-						{
-                        DoCastVictim(Breath2_Spell);
-                        events.ScheduleEvent(EVENT_BREATH_2, 60*IN_MILLISECONDS);
-						}
-                        break;
+                            DoCastVictim(Breath2_Spell);
+                            events.ScheduleEvent(EVENT_BREATH_2, 60000);
+                            break;
                     case EVENT_AFFLICTION:
                         {
                             Map::PlayerList const &players = me->GetMap()->GetPlayers();
@@ -257,13 +254,11 @@ public:
                                 }
                             }
                         }
-                        events.ScheduleEvent(EVENT_AFFLICTION, 10*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_AFFLICTION, 10000);
                         break;
                     case EVENT_FRENZY:
-						{
                         DoCast(me, SPELL_FRENZY);
-                        events.ScheduleEvent(EVENT_FRENZY, urand(10, 15)*IN_MILLISECONDS);
-						}
+                        events.ScheduleEvent(EVENT_FRENZY, urand(10000, 15000));
                         break;
                 }
             }

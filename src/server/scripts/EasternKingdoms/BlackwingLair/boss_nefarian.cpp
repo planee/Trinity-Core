@@ -17,64 +17,73 @@
  */
 
 #include "ScriptMgr.h"
+#include "ScriptedGossip.h"
 #include "ScriptedCreature.h"
 #include "blackwing_lair.h"
+#include "Player.h"
 
 enum Events
 {
     // Victor Nefarius
-    EVENT_SPAWN_ADD     = 1,
-    EVENT_SHADOW_BOLT   = 2,
-    EVENT_FEAR          = 3,
-    EVENT_MIND_CONTROL  = 4,
-
+    EVENT_SPAWN_ADD            = 1,
+    EVENT_SHADOW_BOLT          = 2,
+    EVENT_FEAR                 = 3,
+    EVENT_MIND_CONTROL         = 4,
     // Nefarian
-    EVENT_SHADOWFLAME   = 5,
-    EVENT_VEILOFSHADOW  = 6,
-    EVENT_CLEAVE        = 7,
-    EVENT_TAILLASH      = 8,
-    EVENT_CLASSCALL     = 9
+    EVENT_SHADOWFLAME          = 5,
+    EVENT_VEILOFSHADOW         = 6,
+    EVENT_CLEAVE               = 7,
+    EVENT_TAILLASH             = 8,
+    EVENT_CLASSCALL            = 9
 };
 
 enum Says
 {
-    // Victor Nefarius
-    SAY_GAMESBEGIN_1        = 0,
-    SAY_GAMESBEGIN_2        = 1,
-    //SAY_VAEL_INTRO          = 2, Not used - when he corrupts Vaelastrasz
+    SAY_GAMESBEGIN_1           = 11,
+    SAY_GAMESBEGIN_2           = 12,
+ // SAY_VAEL_INTRO             = 13, Not used - when he corrupts Vaelastrasz
 
     // Nefarian
-    SAY_RANDOM              = 0,
-    SAY_RAISE_SKELETONS     = 1,
-    SAY_SLAY                = 2,
-    SAY_DEATH               = 3,
+    SAY_RANDOM                 = 0,
+    SAY_RAISE_SKELETONS        = 1,
+    SAY_SLAY                   = 2,
+    SAY_DEATH                  = 3,
 
-    SAY_MAGE                = 4,
-    SAY_WARRIOR             = 5,
-    SAY_DRUID               = 6,
-    SAY_PRIEST              = 7,
-    SAY_PALADIN             = 8,
-    SAY_SHAMAN              = 9,
-    SAY_WARLOCK             = 10,
-    SAY_HUNTER              = 11,
-    SAY_ROGUE               = 12
+    SAY_MAGE                   = 4,
+    SAY_WARRIOR                = 5,
+    SAY_DRUID                  = 6,
+    SAY_PRIEST                 = 7,
+    SAY_PALADIN                = 8,
+    SAY_SHAMAN                 = 9,
+    SAY_WARLOCK                = 10,
+    SAY_HUNTER                 = 11,
+    SAY_ROGUE                  = 12,
+    SAY_DEATH_KNIGHT           = 13
+};
+
+enum Gossip
+{
+   GOSSIP_ID                   = 21332,
 };
 
 enum Creatures
 {
     NPC_BRONZE_DRAKANOID       = 14263,
-    NPCE_BLUE_DRAKANOID        = 14261,
+    NPC_BLUE_DRAKANOID         = 14261,
     NPC_RED_DRAKANOID          = 14264,
     NPC_GREEN_DRAKANOID        = 14262,
-    NPCE_BLACK_DRAKANOID       = 14265,
+    NPC_BLACK_DRAKANOID        = 14265,
     NPC_CHROMATIC_DRAKANOID    = 14302,
-
-    BONE_CONSTRUCT             = 14605
+    NPC_BONE_CONSTRUCT         = 14605
 };
 
 enum Spells
 {
     // Victor Nefarius
+    // UBRS Spells
+    SPELL_CHROMATIC_CHAOS       = 16337, // Self Cast hits 10339
+    SPELL_VAELASTRASZZ_SPAWN    = 16354, // Self Cast Depawn one sec after
+    // BWL Spells
     SPELL_SHADOWBOLT            = 22677,
     SPELL_SHADOWBOLT_VOLLEY     = 22665,
     SPELL_SHADOW_COMMAND        = 22667,
@@ -98,12 +107,14 @@ enum Spells
     SPELL_SHAMAN                = 23425,     // totems
     SPELL_WARLOCK               = 23427,     // infernals
     SPELL_HUNTER                = 23436,     // bow broke
-    SPELL_ROGUE                 = 23414      // Paralise
-};
+    SPELL_ROGUE                 = 23414,     // Paralise
+    SPELL_DEATH_KNIGHT          = 49576      // Death Grip
 
-#define GOSSIP_ITEM_1           "I've made no mistakes."
-#define GOSSIP_ITEM_2           "You have lost your mind, Nefarius. You speak in riddles."
-#define GOSSIP_ITEM_3           "Please do."
+// 19484
+// 22664
+// 22674
+// 22666
+};
 
 Position const DrakeSpawnLoc[2] = // drakonid
 {
@@ -117,45 +128,12 @@ Position const NefarianLoc[2] =
     {-7535.456543f, -1279.562500f, 476.798706f, 3.0f}  // nefarian move
 };
 
-uint32 const Entry[5] = {NPC_BRONZE_DRAKANOID, NPCE_BLUE_DRAKANOID, NPC_RED_DRAKANOID, NPC_GREEN_DRAKANOID, NPCE_BLACK_DRAKANOID};
+uint32 const Entry[5] = {NPC_BRONZE_DRAKANOID, NPC_BLUE_DRAKANOID, NPC_RED_DRAKANOID, NPC_GREEN_DRAKANOID, NPC_BLACK_DRAKANOID};
 
 class boss_victor_nefarius : public CreatureScript
 {
 public:
     boss_victor_nefarius() : CreatureScript("boss_victor_nefarius") { }
-
-    bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)
-    {
-        player->PlayerTalkClass->ClearMenus();
-        switch (action)
-        {
-            case GOSSIP_ACTION_INFO_DEF+1:
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+2);
-                player->SEND_GOSSIP_MENU(7198, creature->GetGUID());
-                break;
-            case GOSSIP_ACTION_INFO_DEF+2:
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_3, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+3);
-                player->SEND_GOSSIP_MENU(7199, creature->GetGUID());
-                break;
-            case GOSSIP_ACTION_INFO_DEF+3:
-                player->CLOSE_GOSSIP_MENU();
-				creature->AI()->Talk(SAY_GAMESBEGIN_1);
-                CAST_AI(boss_victor_nefarius::boss_victor_nefariusAI, creature->AI())->BeginEvent(player);
-                break;
-        }
-        return true;
-    }
-
-    bool OnGossipHello(Player* player, Creature* creature)
-    {
-        if (InstanceScript* instance = player->GetInstanceScript())
-            if (instance->GetBossState(BOSS_CHOMAGGUS) != DONE || instance->GetBossState(BOSS_NEFARIAN) == DONE)
-                return false;
-
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-        player->SEND_GOSSIP_MENU(7134, creature->GetGUID());
-        return true;
-    }
 
     struct boss_victor_nefariusAI : public BossAI
     {
@@ -163,16 +141,19 @@ public:
 
         void Reset()
         {
-            if (!me->FindNearestCreature(NPC_NEFARIAN, 1000.0f, true))
-                _Reset();
-            SpawnedAdds = 0;
+            if (me->GetMapId() == 469)
+            {
+                if (!me->FindNearestCreature(NPC_NEFARIAN, 1000.0f, true))
+                    _Reset();
+                SpawnedAdds = 0;
 
-            me->SetVisible(true);
-            me->SetPhaseMask(1, true);
-            me->SetUInt32Value(UNIT_NPC_FLAGS, 1);
-            me->setFaction(35);
-            me->SetStandState(UNIT_STAND_STATE_SIT_HIGH_CHAIR);
-            me->RemoveAura(SPELL_NEFARIANS_BARRIER);
+                me->SetVisible(true);
+                me->SetPhaseMask(1, true);
+                me->SetUInt32Value(UNIT_NPC_FLAGS, 1);
+                me->setFaction(35);
+                me->SetStandState(UNIT_STAND_STATE_SIT_HIGH_CHAIR);
+                me->RemoveAura(SPELL_NEFARIANS_BARRIER);
+            }
         }
 
         void JustReachedHome()
@@ -191,17 +172,17 @@ public:
             DoCast(me, SPELL_NEFARIANS_BARRIER);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             AttackStart(target);
-            events.ScheduleEvent(EVENT_SHADOW_BOLT, urand(3, 10)*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_FEAR, urand(10, 20)*IN_MILLISECONDS);
-            //events.ScheduleEvent(EVENT_MIND_CONTROL, urand(30, 35)*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_SPAWN_ADD, 10*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_SHADOW_BOLT, urand(3000, 10000));
+            events.ScheduleEvent(EVENT_FEAR, urand(10000, 20000));
+            //events.ScheduleEvent(EVENT_MIND_CONTROL, urand(30000, 35000));
+            events.ScheduleEvent(EVENT_SPAWN_ADD, 10000);
         }
 
         void SummonedCreatureDies(Creature* summon, Unit* /*killer*/)
         {
             if (summon->GetEntry() != NPC_NEFARIAN)
             {
-                summon->UpdateEntry(BONE_CONSTRUCT);
+                summon->UpdateEntry(NPC_BONE_CONSTRUCT);
                 summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 summon->SetReactState(REACT_PASSIVE);
                 summon->SetStandState(UNIT_STAND_STATE_DEAD);
@@ -236,17 +217,17 @@ public:
                                     break;
                             }
                             DoResetThreat();
-                            events.ScheduleEvent(EVENT_SHADOW_BOLT, urand(3, 10)*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_SHADOW_BOLT, urand(3000, 10000));
                             break;
                         case EVENT_FEAR:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40, true))
                                 DoCast(target, SPELL_FEAR);
-                            events.ScheduleEvent(EVENT_FEAR, urand(10, 20)*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_FEAR, urand(10000, 20000));
                             break;
                         case EVENT_MIND_CONTROL:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40, true))
                                 DoCast(target, SPELL_SHADOW_COMMAND);
-                            events.ScheduleEvent(EVENT_MIND_CONTROL, urand(30, 35)*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_MIND_CONTROL, urand(30000, 35000));
                             break;
                         case EVENT_SPAWN_ADD:
                             for (uint8 i=0; i<2; ++i)
@@ -259,7 +240,7 @@ public:
                                 if (Creature* dragon = me->SummonCreature(CreatureID, DrakeSpawnLoc[i]))
                                 {
                                     dragon->setFaction(103);
-                                    dragon->AI()->AttackStart(me->GetVictim());                                                                        
+                                    dragon->AI()->AttackStart(me->GetVictim());
                                 }
 
                                 if (++SpawnedAdds >= 42)
@@ -279,15 +260,25 @@ public:
                                     return;
                                 }
                             }
-                            events.ScheduleEvent(EVENT_SPAWN_ADD, 4*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_SPAWN_ADD, 4000);
                             break;
                     }
                 }
             }
         }
 
-    private:
-        uint32 SpawnedAdds;
+        void sGossipSelect(Player* player, uint32 sender, uint32 action)
+        {
+            if (sender == GOSSIP_ID && action == 0)
+            {
+                player->CLOSE_GOSSIP_MENU();
+                Talk(SAY_GAMESBEGIN_1);
+                BeginEvent(player);
+            }
+        }
+
+        private:
+            uint32 SpawnedAdds;
     };
 
     CreatureAI* GetAI(Creature* creature) const
@@ -309,7 +300,7 @@ public:
         {
             Phase3 = false;
             canDespawn = false;
-            DespawnTimer = 30*IN_MILLISECONDS;
+            DespawnTimer = 30000;
         }
 
         void JustReachedHome()
@@ -317,14 +308,14 @@ public:
             canDespawn = true;
         }
 
-        void EnterCombat(Unit* who)
+        void EnterCombat(Unit* /*who*/)
         {
-            events.ScheduleEvent(EVENT_SHADOWFLAME, 12*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_FEAR, urand(25, 35)*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_VEILOFSHADOW, urand(25, 35)*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_CLEAVE, 7*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_SHADOWFLAME, 12000);
+            events.ScheduleEvent(EVENT_FEAR, urand(25000, 35000));
+            events.ScheduleEvent(EVENT_VEILOFSHADOW, urand(25000, 35000));
+            events.ScheduleEvent(EVENT_CLEAVE, 7000);
             //events.ScheduleEvent(EVENT_TAILLASH, 10000);
-            events.ScheduleEvent(EVENT_CLASSCALL, urand(30, 35)*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_CLASSCALL, urand(30000, 35000));
             Talk(SAY_RANDOM);
         }
 
@@ -363,7 +354,7 @@ public:
                     instance->SetBossState(BOSS_NEFARIAN, FAIL);
 
                 std::list<Creature*> constructList;
-                me->GetCreatureListWithEntryInGrid(constructList, BONE_CONSTRUCT, 500.0f);
+                me->GetCreatureListWithEntryInGrid(constructList, NPC_BONE_CONSTRUCT, 500.0f);
                 for (std::list<Creature*>::const_iterator itr = constructList.begin(); itr != constructList.end(); ++itr)
                     (*itr)->DespawnOrUnsummon();
 
@@ -386,27 +377,27 @@ public:
                 {
                     case EVENT_SHADOWFLAME:
                         DoCastVictim(SPELL_SHADOWFLAME);
-                        events.ScheduleEvent(EVENT_SHADOWFLAME, 12*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_SHADOWFLAME, 12000);
                         break;
                     case EVENT_FEAR:
                         DoCastVictim(SPELL_BELLOWINGROAR);
-                        events.ScheduleEvent(EVENT_FEAR, urand(25, 35)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_FEAR, urand(25000, 35000));
                         break;
                     case EVENT_VEILOFSHADOW:
                         DoCastVictim(SPELL_VEILOFSHADOW);
-                        events.ScheduleEvent(EVENT_VEILOFSHADOW, urand(25, 35)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_VEILOFSHADOW, urand(25000, 35000));
                         break;
                     case EVENT_CLEAVE:
                         DoCastVictim(SPELL_CLEAVE);
-                        events.ScheduleEvent(EVENT_CLEAVE, 7*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_CLEAVE, 7000);
                         break;
                     case EVENT_TAILLASH:
                         // Cast NYI since we need a better check for behind target
                         DoCastVictim(SPELL_TAILLASH);
-                        events.ScheduleEvent(EVENT_TAILLASH, 10*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_TAILLASH, 10000);
                         break;
                     case EVENT_CLASSCALL:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                             switch (target->getClass())
                         {
                             case CLASS_MAGE:
@@ -445,8 +436,14 @@ public:
                                 Talk(SAY_ROGUE);
                                 DoCast(me, SPELL_ROGUE);
                                 break;
+                            case CLASS_DEATH_KNIGHT:
+                                Talk(SAY_DEATH_KNIGHT);
+                                DoCast(me, SPELL_DEATH_KNIGHT);
+                                break;
+                            default:
+                                break;
                         }
-                        events.ScheduleEvent(EVENT_CLASSCALL, urand(30, 35)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_CLASSCALL, urand(30000, 35000));
                         break;
                 }
             }
@@ -455,7 +452,7 @@ public:
             if (!Phase3 && HealthBelowPct(20))
             {
                 std::list<Creature*> constructList;
-                me->GetCreatureListWithEntryInGrid(constructList, BONE_CONSTRUCT, 500.0f);
+                me->GetCreatureListWithEntryInGrid(constructList, NPC_BONE_CONSTRUCT, 500.0f);
                 for (std::list<Creature*>::const_iterator itr = constructList.begin(); itr != constructList.end(); ++itr)
                     if ((*itr) && !(*itr)->IsAlive())
                     {

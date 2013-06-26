@@ -36,7 +36,7 @@ Blackwing Lair Encounter:
 Position const SummonPosition[8] =
 {
     {-7661.207520f, -1043.268188f, 407.199554f, 6.280452f},
-    {-7644.145020f, -1065.628052f, 407.204956f, 0.501492f}, 
+    {-7644.145020f, -1065.628052f, 407.204956f, 0.501492f},
     {-7624.260742f, -1095.196899f, 407.205017f, 0.544694f},
     {-7608.501953f, -1116.077271f, 407.199921f, 0.816443f},
     {-7531.841797f, -1063.765381f, 407.199615f, 2.874187f},
@@ -50,13 +50,13 @@ uint32 const Entry[5] = {12422, 12458, 12416, 12402, 12459};
 class instance_blackwing_lair : public InstanceMapScript
 {
 public:
-    instance_blackwing_lair() : InstanceMapScript("instance_blackwing_lair", 469) { }
+    instance_blackwing_lair() : InstanceMapScript(BRLScriptName, 469) { }
 
     struct instance_blackwing_lair_InstanceMapScript : public InstanceScript
     {
-        instance_blackwing_lair_InstanceMapScript(Map* map) : InstanceScript(map) 
+        instance_blackwing_lair_InstanceMapScript(Map* map) : InstanceScript(map)
         {
-            SetBossNumber(MAX_ENCOUNTER);
+            SetBossNumber(EncounterCount);
         }
 
         void Initialize()
@@ -154,7 +154,7 @@ public:
                     break;
                 case 181125: // Door
                     NefarianDoorGUID = go->GetGUID();
-                    HandleGameObject(0, GetBossState(BOSS_CHOMAGGUS) == DONE, go);
+                    HandleGameObject(0, GetBossState(BOSS_CHROMAGGUS) == DONE, go);
                     break;
             }
         }
@@ -193,7 +193,7 @@ public:
                 case BOSS_FLAMEGOR:
                     HandleGameObject(ChrommagusDoorGUID, GetBossState(BOSS_FIREMAW) == DONE && GetBossState(BOSS_EBONROC) == DONE && GetBossState(BOSS_FLAMEGOR) == DONE);
                     break;
-                case BOSS_CHOMAGGUS:
+                case BOSS_CHROMAGGUS:
                     HandleGameObject(NefarianDoorGUID, state == DONE);
                     break;
                 case BOSS_NEFARIAN:
@@ -206,6 +206,8 @@ public:
                         case FAIL:
                             _events.ScheduleEvent(EVENT_RESPAWN_NEFARIUS, 15*IN_MILLISECONDS*MINUTE);
                             SetBossState(BOSS_NEFARIAN, NOT_STARTED);
+                            break;
+                        default:
                             break;
                     }
                     break;
@@ -309,6 +311,8 @@ public:
         }
 
     protected:
+        // Misc
+        EventMap _events;
         // Razorgore
         uint8 EggCount;
         uint32 EggEvent;
@@ -337,9 +341,6 @@ public:
         // Nefarian
         uint64 LordVictorNefariusGUID;
         uint64 NefarianGUID;
-            
-        // Misc
-        EventMap _events;
     };
 
     InstanceScript* GetInstanceScript(InstanceMap* map) const

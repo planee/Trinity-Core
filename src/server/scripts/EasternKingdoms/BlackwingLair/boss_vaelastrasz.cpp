@@ -24,68 +24,47 @@
 
 enum Says
 {
-   SAY_LINE1           = 0,
-   SAY_LINE2           = 1,
-   SAY_LINE3           = 2,
-   SAY_HALFLIFE        = 3,
-   SAY_KILLTARGET      = 4
+   SAY_LINE1                         = 0,
+   SAY_LINE2                         = 1,
+   SAY_LINE3                         = 2,
+   SAY_HALFLIFE                      = 3,
+   SAY_KILLTARGET                    = 4
 };
 
-#define GOSSIP_ITEM_VAELASTRAZ1  "I cannot Vaelastraz! Surely something can be done to heal you!"
-#define GOSSIP_ITEM_VAELASTRAZ2  "Vaelastraz, no!!"
+enum Gossip
+{
+   GOSSIP_ID                         = 21334,
+};
 
 enum Spells
 {
-   SPELL_ESSENCEOFTHERED       = 23513,
-   SPELL_FLAMEBREATH           = 23461,
-   SPELL_FIRENOVA              = 23462,
-   SPELL_TAILSWIPE             = 15847,
-   SPELL_BURNINGADRENALINE     = 23620,
-   SPELL_CLEAVE                = 20684   //Chain cleave is most likely named something different and contains a dummy effect
+   SPELL_ESSENCEOFTHERED             = 23513,
+   SPELL_FLAMEBREATH                 = 23461,
+   SPELL_FIRENOVA                    = 23462,
+   SPELL_TAILSWIPE                   = 15847,
+   SPELL_BURNINGADRENALINE           = 23620,
+   SPELL_CLEAVE                      = 20684   //Chain cleave is most likely named something different and contains a dummy effect
 };
 
 enum Events
 {
-    EVENT_ESSENCEOFTHERED           = 1,
-    EVENT_FLAMEBREATH               = 2,
-    EVENT_FIRENOVA                  = 3,
-    EVENT_TAILSWIPE                 = 4,
-    EVENT_CLEAVE                    = 5,
-    EVENT_BURNINGADRENALINE_CASTER  = 6,
-    EVENT_BURNINGADRENALINE_TANK    = 7
+    EVENT_SPEECH_1                  = 1,
+    EVENT_SPEECH_2                  = 2,
+    EVENT_SPEECH_3                  = 3,
+    EVENT_SPEECH_4                  = 4,
+    EVENT_ESSENCEOFTHERED           = 5,
+    EVENT_FLAMEBREATH               = 6,
+    EVENT_FIRENOVA                  = 7,
+    EVENT_TAILSWIPE                 = 8,
+    EVENT_CLEAVE                    = 9,
+    EVENT_BURNINGADRENALINE_CASTER  = 10,
+    EVENT_BURNINGADRENALINE_TANK    = 11
 };
 
 class boss_vaelastrasz : public CreatureScript
 {
 public:
     boss_vaelastrasz() : CreatureScript("boss_vaelastrasz") { }
-
-    bool OnGossipHello(Player* player, Creature* creature)
-    {
-        if (InstanceScript* instance = player->GetInstanceScript())
-            if (instance->GetBossState(BOSS_RAZORGORE) != DONE)
-                return false;
-
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_VAELASTRAZ1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
-        player->SEND_GOSSIP_MENU(907, creature->GetGUID());
-        return true;
-    }
-
-    bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)
-    {
-        switch (action)
-        {
-            case GOSSIP_ACTION_INFO_DEF:
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_VAELASTRAZ2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-                break;
-            case GOSSIP_ACTION_INFO_DEF+1:
-                CAST_AI(boss_vaelastrasz::boss_vaelAI, creature->AI())->BeginSpeech(player);
-                player->PlayerTalkClass->ClearMenus();
-                player->CLOSE_GOSSIP_MENU();   
-                break;
-        }
-        return true;
-    }
 
     struct boss_vaelAI : public BossAI
     {
@@ -102,10 +81,8 @@ public:
 
             me->SetStandState(UNIT_STAND_STATE_DEAD);
             PlayerGUID = 0;
-            Step = 0;
 
             HasYelled = false;
-            DoingSpeech = false;
         }
 
         void EnterCombat(Unit* /*who*/)
@@ -117,27 +94,19 @@ public:
             // now drop damage requirement to be able to take loot
             me->ResetPlayerDamageReq();
 
-            events.ScheduleEvent(EVENT_CLEAVE, 10*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_FLAMEBREATH, 15*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_FIRENOVA, 20*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_TAILSWIPE, 11*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_BURNINGADRENALINE_CASTER, 15*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_BURNINGADRENALINE_TANK, 45*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_CLEAVE, 10000);
+            events.ScheduleEvent(EVENT_FLAMEBREATH, 15000);
+            events.ScheduleEvent(EVENT_FIRENOVA, 20000);
+            events.ScheduleEvent(EVENT_TAILSWIPE, 11000);
+            events.ScheduleEvent(EVENT_BURNINGADRENALINE_CASTER, 15000);
+            events.ScheduleEvent(EVENT_BURNINGADRENALINE_TANK, 45000);
         }
 
         void BeginSpeech(Unit* target)
         {
             PlayerGUID = target->GetGUID();
-
-            DoingSpeech = true;
-
             me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-        }
-
-        void JumpToNextStep(uint32 Timer)
-        {
-            PhaseTimer = Timer;
-            ++Step;
+            events.ScheduleEvent(EVENT_SPEECH_1, 1000);
         }
 
         void KilledUnit(Unit* victim)
@@ -150,45 +119,40 @@ public:
 
         void UpdateAI(uint32 diff)
         {
+            events.Update(diff);
+
             // Speech
-            if (DoingSpeech)
+            if (!UpdateVictim())
             {
-                if (PhaseTimer <= diff)
+                while (uint32 eventId = events.ExecuteEvent())
                 {
-                    switch (Step)
+                    switch (eventId)
                     {
-                        case 0:
+                        case EVENT_SPEECH_1:
                             Talk(SAY_LINE1);
                             me->SetStandState(UNIT_STAND_STATE_STAND);
                             me->HandleEmoteCommand(EMOTE_ONESHOT_TALK);
-                            JumpToNextStep(12*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_SPEECH_2, 12000);
                             break;
-                        case 1:
+                        case EVENT_SPEECH_2:
                             Talk(SAY_LINE2);
                             me->HandleEmoteCommand(EMOTE_ONESHOT_TALK);
-                            JumpToNextStep(12*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_SPEECH_3, 12000);
                             break;
-                        case 2:
+                        case EVENT_SPEECH_3:
                             Talk(SAY_LINE3);
                             me->HandleEmoteCommand(EMOTE_ONESHOT_TALK);
-                            JumpToNextStep(16*IN_MILLISECONDS);
+                            events.ScheduleEvent(EVENT_SPEECH_4, 16000);
                             break;
-                        case 3:
+                        case EVENT_SPEECH_4:
                             me->setFaction(103);
                             if (PlayerGUID && Unit::GetUnit(*me, PlayerGUID))
-                                AttackStart(Unit::GetUnit(*me, PlayerGUID));
-                            DoingSpeech = false;
+                                AttackStart(Unit::GetUnit(*me, PlayerGUID));;
                             break;
                     }
                 }
-                else
-                    PhaseTimer -= diff;
-            }
-
-            if (!UpdateVictim())
                 return;
-
-            events.Update(diff);
+            }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -197,17 +161,17 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CLEAVE:                        
-                        events.ScheduleEvent(EVENT_CLEAVE, 15*IN_MILLISECONDS);
+                    case EVENT_CLEAVE:
+                        events.ScheduleEvent(EVENT_CLEAVE, 15000);
                         DoCastVictim(SPELL_CLEAVE);
                         break;
                     case EVENT_FLAMEBREATH:
                         DoCastVictim(SPELL_FLAMEBREATH);
-                        events.ScheduleEvent(EVENT_FLAMEBREATH, urand(8, 14)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_FLAMEBREATH, urand(8000, 14000));
                         break;
                     case EVENT_FIRENOVA:
                         DoCastVictim(SPELL_FIRENOVA);
-                        events.ScheduleEvent(EVENT_FIRENOVA, 15*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_FIRENOVA, 15000);
                         break;
                     case EVENT_TAILSWIPE:
                         //Only cast if we are behind
@@ -215,7 +179,7 @@ public:
                         {
                         DoCast(me->GetVictim(), SPELL_TAILSWIPE);
                         }*/
-                        events.ScheduleEvent(EVENT_TAILSWIPE, 15*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_TAILSWIPE, 15000);
                         break;
                     case EVENT_BURNINGADRENALINE_CASTER:
                         {
@@ -232,12 +196,12 @@ public:
                             if (target)                                     // cast on self (see below)
                                 target->CastSpell(target, SPELL_BURNINGADRENALINE, true);
                         }
-                        events.ScheduleEvent(EVENT_BURNINGADRENALINE_CASTER, 15*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_BURNINGADRENALINE_CASTER, 15000);
                         break;
                     case EVENT_BURNINGADRENALINE_TANK:
                         // have the victim cast the spell on himself otherwise the third effect aura will be applied to Vael instead of the player
                         me->GetVictim()->CastSpell(me->GetVictim(), SPELL_BURNINGADRENALINE, true);
-                        events.ScheduleEvent(EVENT_BURNINGADRENALINE_TANK, 45*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_BURNINGADRENALINE_TANK, 45000);
                         break;
                 }
             }
@@ -252,13 +216,18 @@ public:
             DoMeleeAttackIfReady();
         }
 
-    private:
-        uint8 Step;
-        uint32 PhaseTimer;
-        uint64 PlayerGUID;
+        void sGossipSelect(Player* player, uint32 sender, uint32 action)
+        {
+            if (sender == GOSSIP_ID && action == 0)
+            {
+                player->CLOSE_GOSSIP_MENU();
+                BeginSpeech(player);
+            }
+        }
 
-        bool HasYelled;
-        bool DoingSpeech;
+        private:
+            uint64 PlayerGUID;
+            bool HasYelled;
     };
 
     CreatureAI* GetAI(Creature* creature) const
@@ -267,7 +236,7 @@ public:
     }
 };
 
-void AddSC_boss_vael()
+void AddSC_boss_vaelastrasz()
 {
     new boss_vaelastrasz();
 }

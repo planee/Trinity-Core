@@ -15,8 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
+#include "Player.h"
+#include "Spell.h"
 #include "blackrock_spire.h"
 
 enum Text
@@ -44,7 +47,7 @@ enum Spells
     SPELL_STRIKE                    = 15580, // Combat
     SPELL_ENCAGE                    = 16045, // Combat
     // Cast on player by altar
-    SPELL_EMBERSEER_START           = 16533
+    SPELL_EMBERSEER_OBJECT_VISUAL   = 16532
 };
 
 enum Events
@@ -71,11 +74,6 @@ class boss_pyroguard_emberseer : public CreatureScript
 public:
     boss_pyroguard_emberseer() : CreatureScript("boss_pyroguard_emberseer") { }
 
-    CreatureAI* GetAI(Creature* creature) const
-    {
-        return new boss_pyroguard_emberseerAI(creature);
-    }
-
     struct boss_pyroguard_emberseerAI : public BossAI
     {
         boss_pyroguard_emberseerAI(Creature* creature) : BossAI(creature, DATA_PYROGAURD_EMBERSEER) {}
@@ -84,7 +82,7 @@ public:
         {
             if (instance)
             {
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC|UNIT_FLAG_IMMUNE_TO_NPC|UNIT_FLAG_NOT_SELECTABLE);
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_NOT_SELECTABLE);
 
                 // Apply auras on spawn and reset
                 // DoCast(me, SPELL_FIRE_SHIELD_TRIGGER); // Need to find this in old DBC if possible
@@ -113,9 +111,7 @@ public:
         void SetData(uint32 type, uint32 data)
         {
             if (instance && type == 1 && data == 1)
-            {
                 events.ScheduleEvent(EVENT_PLAYER_CHECK, 5000);
-            }
 
             if (instance && type == 1 && data == 2)
             {
@@ -167,8 +163,10 @@ public:
         void SpellHit(Unit* /*caster*/, SpellInfo const* spell)
         {
             if (spell->Id == SPELL_ENCAGE_EMBERSEER)
-                if (me->GetAuraCount(SPELL_ENCAGED_EMBERSEER) == 0)
-                    DoCast(me, SPELL_ENCAGED_EMBERSEER);
+            {
+                if (!me->GetAuraCount(SPELL_ENCAGED_EMBERSEER))
+                    me->CastSpell(me, SPELL_ENCAGED_EMBERSEER);
+            }
 
             if (spell->Id == SPELL_EMBERSEER_GROWING_TRIGGER)
             {
@@ -251,10 +249,23 @@ public:
                         events.ScheduleEvent(SPELL_FIRE_SHIELD, 3000);
                         break;
                     case EVENT_PLAYER_CHECK:
-                        // #### TODO Check to see if all players in instance have aura SPELL_EMBERSEER_START ####
-                        // #### If true do following events ####
-                        events.ScheduleEvent(EVENT_PRE_FIGHT_1, 1000);
-                        instance->SetBossState(DATA_PYROGAURD_EMBERSEER, IN_PROGRESS);
+                        {
+                            // Check to see if all players in instance have aura SPELL_EMBERSEER_START before starting event
+                            bool _hasAura = true;
+                            Map::PlayerList const &players = me->GetMap()->GetPlayers();
+                            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
+                                if (Player* player = itr->GetSource()->ToPlayer())
+                                    if (!player->HasAura(SPELL_EMBERSEER_OBJECT_VISUAL))
+                                        _hasAura = false;
+
+                            if (_hasAura)
+                            {
+                                events.ScheduleEvent(EVENT_PRE_FIGHT_1, 1000);
+                                instance->SetBossState(DATA_PYROGAURD_EMBERSEER, IN_PROGRESS);
+                            }
+                        break;
+                        }
+                    default:
                         break;
                 }
             }
@@ -262,19 +273,16 @@ public:
             if (!UpdateVictim())
                 return;
 
-            if (me->HasUnitState(UNIT_STATE_CASTING))
-                return;
-
             while (uint32 eventId = events.ExecuteEvent())
             {
                 switch (eventId)
                 {
                     case EVENT_FIRENOVA:
-                        DoCastVictim(SPELL_FIRENOVA);
+                        DoCast(me, SPELL_FIRENOVA);
                         events.ScheduleEvent(EVENT_FIRENOVA, 6000);
                         break;
                     case EVENT_FLAMEBUFFET:
-                        DoCastVictim(SPELL_FLAMEBUFFET);
+                        DoCast(me, SPELL_FLAMEBUFFET);
                         events.ScheduleEvent(EVENT_FLAMEBUFFET, 14000);
                         break;
                     case EVENT_PYROBLAST:
@@ -287,6 +295,11 @@ public:
             DoMeleeAttackIfReady();
         }
     };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new boss_pyroguard_emberseerAI(creature);
+    }
 };
 
 /*####

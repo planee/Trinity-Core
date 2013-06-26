@@ -52,9 +52,9 @@ public:
             }
             _EnterCombat();
 
-            events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10, 20)*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_WINGBUFFET, 30*IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8, 10)*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10000, 20000));
+            events.ScheduleEvent(EVENT_WINGBUFFET, 30000);
+            events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8000, 10000));
         }
 
         void UpdateAI(uint32 diff)
@@ -73,15 +73,15 @@ public:
                 {
                     case EVENT_SHADOWFLAME:
                         DoCastVictim(SPELL_SHADOWFLAME);
-                        events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10, 20)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10000, 20000));
                         break;
                     case EVENT_WINGBUFFET:
                         DoCastVictim(SPELL_WINGBUFFET);
-                        events.ScheduleEvent(EVENT_WINGBUFFET, 30*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_WINGBUFFET, 30000);
                         break;
                     case EVENT_SHADOWOFEBONROC:
                         DoCastVictim(SPELL_SHADOWOFEBONROC);
-                        events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8, 10)*IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8000, 10000));
                         break;
                 }
             }
@@ -89,7 +89,7 @@ public:
             DoMeleeAttackIfReady();
         }
     };
-    
+
     CreatureAI* GetAI(Creature* creature) const
     {
         return new boss_ebonrocAI (creature);

@@ -18,42 +18,37 @@
 #ifndef DEF_BLACKWING_LAIR_H
 #define DEF_BLACKWING_LAIR_H
 
+uint32 const EncounterCount     = 8;
+
+#define BRLScriptName "instance_blackwing_lair"
+
 enum BWLEncounter
 {
-    BOSS_RAZORGORE      = 0,
-    BOSS_VAELASTRAZ     = 1,
-    BOSS_BROODLORD      = 2,
-    BOSS_FIREMAW        = 3,
-    BOSS_EBONROC        = 4,
-    BOSS_FLAMEGOR       = 5,
-    BOSS_CHOMAGGUS      = 6,
-    BOSS_NEFARIAN       = 7,
-    MAX_ENCOUNTER
+    BOSS_RAZORGORE              = 0,
+    BOSS_VAELASTRAZ             = 1,
+    BOSS_BROODLORD              = 2,
+    BOSS_FIREMAW                = 3,
+    BOSS_EBONROC                = 4,
+    BOSS_FLAMEGOR               = 5,
+    BOSS_CHROMAGGUS             = 6,
+    BOSS_NEFARIAN               = 7
 };
 
-enum BWLCreatures
+enum CreatureIds
 {
     NPC_RAZORGORE               = 12435,
     NPC_BLACKWING_DRAGON        = 12422,
     NPC_BLACKWING_TASKMASTER    = 12458,
     NPC_BLACKWING_LEGIONAIRE    = 12416,
     NPC_BLACKWING_WARLOCK       = 12459,
-
     NPC_VAELASTRAZ              = 13020,
-
     NPC_BROODLORD               = 12017,
-
     NPC_FIRENAW                 = 11983,
-
     NPC_EBONROC                 = 14601,
-
     NPC_FLAMEGOR                = 11981,
-
     NPC_CHROMAGGUS              = 14020,
-
     NPC_VICTOR_NEFARIUS         = 10162,
-
-    NPC_NEFARIAN                = 11583,
+    NPC_NEFARIAN                = 11583
 };
 
 enum BWLData64
@@ -80,7 +75,7 @@ enum BWLMisc
 {
     // Razorgore Egg Event
     ACTION_PHASE_TWO            = 1,
-    DATA_EGG_EVENT,
+    DATA_EGG_EVENT
 };
 
 #endif
