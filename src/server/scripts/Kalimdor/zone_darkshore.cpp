@@ -312,10 +312,10 @@ enum Threshwackonator
     SAY_AT_CLOSE            = 1,
     QUEST_GYROMAST_REV      = 2078,
     NPC_GELKAK              = 6667,
-    FACTION_HOSTILE         = 14
+    FACTION_HOSTILE         = 7
 };
 
-#define GOSSIP_ITEM_INSERT_KEY  "[PH] Insert key"
+#define GOSSIP_ITEM_INSERT_KEY  "Insert key"
 
 class npc_threshwackonator : public CreatureScript
 {
@@ -380,7 +380,7 @@ public:
             if (Player* pHolder = GetLeaderForFollower())
                 me->AI()->AttackStart(pHolder);
 
-            SetFollowComplete();
+            /*SetFollowComplete();*/
         }
     };
 
