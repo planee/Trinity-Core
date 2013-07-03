@@ -1781,6 +1781,64 @@ class spell_q12847_summon_soul_moveto_bunny : public SpellScriptLoader
         }
 };
 
+// 任务6661 捕捉矿道老鼠（联盟）
+
+enum Quests6661Data
+{
+    NPC_Mouse           = 13016,
+    NPC_Crazy_Mouse     = 13017,
+	TIME1               = 5000
+};
+
+class spell_q6661_catch_mouse : public SpellScriptLoader
+{
+    public:
+        spell_q6661_catch_mouse() : SpellScriptLoader("spell_q6661_catch_mouse") { }
+
+        class spell_q6661_catch_mouse_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_q6661_catch_mouse_SpellScript);
+
+            bool Load()
+            {
+                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+            }
+
+            void HandleDummy(SpellEffIndex /*effIndex*/)
+            {
+                Player* caster = GetCaster()->ToPlayer();
+                if (GetCastItem())
+                    if (Creature* creatureTarget = GetHitCreature())
+                    {
+                        uint32 uiNewEntry = 0;
+                        switch (caster->GetTeam())
+                        {
+                                case ALLIANCE:
+                                if (creatureTarget->GetEntry() == NPC_Mouse)
+                                    uiNewEntry = NPC_Crazy_Mouse;
+                                break;
+                        }
+                        if (uiNewEntry)
+                        {
+                            creatureTarget->UpdateEntry(uiNewEntry);
+                            creatureTarget->HandleEmoteCommand(EMOTE_STATE_DANCE);
+							creatureTarget->DespawnOrUnsummon(TIME1);
+                        }
+                    }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_q6661_catch_mouse_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_q6661_catch_mouse_SpellScript();
+        }
+};
+
 void AddSC_quest_spell_scripts()
 {
     new spell_q55_sacred_cleansing();
@@ -1825,4 +1883,5 @@ void AddSC_quest_spell_scripts()
     new spell_q13291_q13292_q13239_q13261_frostbrood_skytalon_grab_decoy();
     new spell_q13291_q13292_q13239_q13261_armored_decoy_summon_skytalon();
     new spell_q12847_summon_soul_moveto_bunny();
+    new spell_q6661_catch_mouse();
 }
