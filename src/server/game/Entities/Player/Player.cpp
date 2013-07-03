@@ -1548,7 +1548,7 @@ void Player::Update(uint32 p_time)
     aitem = 52005;
     }
     uint8 msg = CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, aitem, 1);
-    if(GetLevelPlayedTime()%sWorld->getIntConfig(CONFIG_JIANGLI)==0){
+    if(GetLevelPlayedTime()%300==0){
         if (msg == EQUIP_ERR_OK)
            Sleep(1000);
            ChatHandler(GetSession()).SendSysMessage(5612);
