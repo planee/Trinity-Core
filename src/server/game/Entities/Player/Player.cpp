@@ -1530,7 +1530,7 @@ void Player::Update(uint32 p_time)
     if (!IsInWorld())
         return;
     
-    int aitem=0;
+    /*int aitem=0;
     ItemPosCountVec dest;
     if(getLevel()<25){
     aitem = 51999;
@@ -1553,7 +1553,7 @@ void Player::Update(uint32 p_time)
            Sleep(1000);
            ChatHandler(GetSession()).SendSysMessage(5612);
            StoreNewItem(dest, aitem, true);
-    }
+    }*/
     
     // undelivered mail
     if (m_nextMailDelivereTime && m_nextMailDelivereTime <= time(NULL))
