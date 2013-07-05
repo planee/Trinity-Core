@@ -1762,9 +1762,9 @@ class npc_mimiron_bomb_bot : public CreatureScript
     public:
         npc_mimiron_bomb_bot() : CreatureScript("npc_mimiron_bomb_bot") { }
 
-        struct mob_mimiron_bomb_botAI : public ScriptedAI
+        struct npc_mimiron_bomb_botAI : public ScriptedAI
         {
-            mob_mimiron_bomb_botAI(Creature* creature) : ScriptedAI(creature) { }
+            npc_mimiron_bomb_botAI(Creature* creature) : ScriptedAI(creature) { }
 
             Unit* SelectPlayerTargetInRange(float range)
             {
@@ -1809,7 +1809,7 @@ class npc_mimiron_bomb_bot : public CreatureScript
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_mimiron_bomb_botAI(creature);
+            return new npc_mimiron_bomb_botAI(creature);
         }
 };
 

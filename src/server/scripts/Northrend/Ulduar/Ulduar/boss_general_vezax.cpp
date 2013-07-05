@@ -339,14 +339,14 @@ class boss_general_vezax : public CreatureScript
         }
 };
 
-class mob_saronit_vapor : public CreatureScript
+class npc_saronit_vapor : public CreatureScript
 {
     public:
-        mob_saronit_vapor() : CreatureScript("mob_saronit_vapor") { }
+        npc_saronit_vapor() : CreatureScript("npc_saronit_vapor") { }
 
-        struct mob_saronit_vaporAI : public ScriptedAI
+        struct npc_saronit_vaporAI : public ScriptedAI
         {
-            mob_saronit_vaporAI(Creature* c) : ScriptedAI(c)
+            npc_saronit_vaporAI(Creature* c) : ScriptedAI(c)
             {
                 _instance = c->GetInstanceScript();
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
@@ -397,18 +397,18 @@ class mob_saronit_vapor : public CreatureScript
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_saronit_vaporAI(creature);
+            return new npc_saronit_vaporAI(creature);
         }
 };
 
-class mob_saronit_animus : public CreatureScript
+class npc_saronit_animus : public CreatureScript
 {
     public:
-        mob_saronit_animus() : CreatureScript("mob_saronit_animus") { }
+        npc_saronit_animus() : CreatureScript("npc_saronit_animus") { }
 
-        struct mob_saronit_animusAI : public ScriptedAI
+        struct npc_saronit_animusAI : public ScriptedAI
         {
-            mob_saronit_animusAI(Creature* c) : ScriptedAI(c)
+            npc_saronit_animusAI(Creature* c) : ScriptedAI(c)
             {
                 _instance = c->GetInstanceScript();
             }
@@ -452,7 +452,7 @@ class mob_saronit_animus : public CreatureScript
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_saronit_animusAI(creature);
+            return new npc_saronit_animusAI(creature);
         }
 };
 
@@ -604,8 +604,8 @@ class achievement_i_love_the_smell_of_saronite_in_the_morning : public Achieveme
 
 /*
 UPDATE creature_template SET scriptname = 'boss_general_vezax' WHERE entry = 33271;
-UPDATE creature_template SET scriptname = 'mob_saronit_varpor' WHERE entry = 33488;
-UPDATE creature_template SET scriptname = 'mob_saronit_animus' WHERE entry = 33524;
+UPDATE creature_template SET scriptname = 'npc_saronit_varpor' WHERE entry = 33488;
+UPDATE creature_template SET scriptname = 'npc_saronit_animus' WHERE entry = 33524;
 DELETE FROM spell_script_names WHERE spell_id = 62692;
 INSERT INTO spell_script_names VALUE (62692,'spell_general_vezax_aura_of_despair_aura');
 DELETE FROM spell_script_names WHERE spell_id = 63276;
@@ -615,8 +615,8 @@ INSERT INTO spell_script_names VALUE (63276,'spell_general_vezax_mark_of_the_fac
 void AddSC_boss_general_vezax()
 {
     new boss_general_vezax();
-    new mob_saronit_vapor();
-    new mob_saronit_animus();
+    new npc_saronit_vapor();
+    new npc_saronit_animus();
     new spell_general_vezax_aura_of_despair_aura();
     new spell_general_vezax_mark_of_the_faceless_aura();
     new spell_general_vezax_mark_of_the_faceless_drain();

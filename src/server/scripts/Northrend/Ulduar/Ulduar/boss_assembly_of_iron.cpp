@@ -664,19 +664,19 @@ class boss_runemaster_molgeim : public CreatureScript
         }
 };
 
-class mob_rune_of_power : public CreatureScript
+class npc_rune_of_power : public CreatureScript
 {
     public:
-        mob_rune_of_power() : CreatureScript("mob_rune_of_power") { }
+        npc_rune_of_power() : CreatureScript("npc_rune_of_power") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_rune_of_powerAI(creature);
+            return new npc_rune_of_powerAI(creature);
         }
 
-        struct mob_rune_of_powerAI : public ScriptedAI
+        struct npc_rune_of_powerAI : public ScriptedAI
         {
-            mob_rune_of_powerAI(Creature* c) : ScriptedAI(c)
+            npc_rune_of_powerAI(Creature* c) : ScriptedAI(c)
             {
                 me->SetInCombatWithZone();
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -688,14 +688,14 @@ class mob_rune_of_power : public CreatureScript
         };
 };
 
-class mob_lightning_elemental : public CreatureScript
+class npc_lightning_elemental : public CreatureScript
 {
     public:
-        mob_lightning_elemental() : CreatureScript("mob_lightning_elemental") { }
+        npc_lightning_elemental() : CreatureScript("npc_lightning_elemental") { }
 
-        struct mob_lightning_elementalAI : public ScriptedAI
+        struct npc_lightning_elementalAI : public ScriptedAI
         {
-            mob_lightning_elementalAI(Creature* c) : ScriptedAI(c)
+            npc_lightning_elementalAI(Creature* c) : ScriptedAI(c)
             {
                 _Casted = false;
                 SetVictim();
@@ -730,18 +730,18 @@ class mob_lightning_elemental : public CreatureScript
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_lightning_elementalAI(creature);
+            return new npc_lightning_elementalAI(creature);
         }
 };
 
-class mob_rune_of_summoning : public CreatureScript
+class npc_rune_of_summoning : public CreatureScript
 {
     public:
-        mob_rune_of_summoning() : CreatureScript("mob_rune_of_summoning") { }
+        npc_rune_of_summoning() : CreatureScript("npc_rune_of_summoning") { }
 
-        struct mob_rune_of_summoningAI : public ScriptedAI
+        struct npc_rune_of_summoningAI : public ScriptedAI
         {
-            mob_rune_of_summoningAI(Creature* c) : ScriptedAI(c)
+            npc_rune_of_summoningAI(Creature* c) : ScriptedAI(c)
             {
                 _summonCount = 0;
                 _summonTimer = 5000;
@@ -780,7 +780,7 @@ class mob_rune_of_summoning : public CreatureScript
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_rune_of_summoningAI(creature);
+            return new npc_rune_of_summoningAI(creature);
         }
 };
 
@@ -1109,9 +1109,9 @@ void AddSC_boss_assembly_of_iron()
     new spell_steelbreaker_electrical_charge();
     new boss_runemaster_molgeim();
     new boss_stormcaller_brundir();
-    new mob_lightning_elemental();
-    new mob_rune_of_summoning();
-    new mob_rune_of_power();
+    new npc_lightning_elemental();
+    new npc_rune_of_summoning();
+    new npc_rune_of_power();
     new spell_shield_of_runes();
     new achievement_i_choose_you();
     new achievement_but_i_am_on_your_side();

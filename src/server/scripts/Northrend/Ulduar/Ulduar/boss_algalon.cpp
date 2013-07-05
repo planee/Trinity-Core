@@ -902,19 +902,19 @@ class boss_algalon : public CreatureScript
         };
 };
 
-class mob_collapsing_star : public CreatureScript
+class npc_collapsing_star : public CreatureScript
 {
     public:
-        mob_collapsing_star() : CreatureScript("mob_collapsing_star") { }
+        npc_collapsing_star() : CreatureScript("npc_collapsing_star") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_collapsing_starAI(creature);
+            return new npc_collapsing_starAI(creature);
         }
 
-        struct mob_collapsing_starAI : public PassiveAI
+        struct npc_collapsing_starAI : public PassiveAI
         {
-            mob_collapsing_starAI(Creature *creature) : PassiveAI(creature) {}
+            npc_collapsing_starAI(Creature *creature) : PassiveAI(creature) {}
 
             bool exploded;
             uint32 Timer;
@@ -973,19 +973,19 @@ class mob_collapsing_star : public CreatureScript
         };
 };
 
-class mob_black_hole : public CreatureScript
+class npc_black_hole : public CreatureScript
 {
     public:
-        mob_black_hole() : CreatureScript("mob_black_hole") { }
+        npc_black_hole() : CreatureScript("npc_black_hole") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_black_holeAI(creature);
+            return new npc_black_holeAI(creature);
         }
 
-        struct mob_black_holeAI : public ScriptedAI
+        struct npc_black_holeAI : public ScriptedAI
         {
-            mob_black_holeAI(Creature *creature) : ScriptedAI(creature) {}
+            npc_black_holeAI(Creature *creature) : ScriptedAI(creature) {}
 
             uint32 ShiftTimer;
 
@@ -1023,19 +1023,19 @@ class mob_black_hole : public CreatureScript
         };
 };
 
-class mob_living_constellation : public CreatureScript
+class npc_living_constellation : public CreatureScript
 {
     public:
-        mob_living_constellation() : CreatureScript("mob_living_constellation") { }
+        npc_living_constellation() : CreatureScript("npc_living_constellation") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_living_constellationAI(creature);
+            return new npc_living_constellationAI(creature);
         }
 
-        struct mob_living_constellationAI : public ScriptedAI
+        struct npc_living_constellationAI : public ScriptedAI
         {
-            mob_living_constellationAI(Creature *creature) : ScriptedAI(creature) {}
+            npc_living_constellationAI(Creature *creature) : ScriptedAI(creature) {}
 
             uint32 Arcane_Timer;
             bool active;
@@ -1100,19 +1100,19 @@ class mob_living_constellation : public CreatureScript
         };
 };
 
-class mob_dark_matter_algalon : public CreatureScript
+class npc_dark_matter_algalon : public CreatureScript
 {
     public:
-        mob_dark_matter_algalon() : CreatureScript("mob_dark_matter_algalon") { }
+        npc_dark_matter_algalon() : CreatureScript("npc_dark_matter_algalon") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_dark_matter_algalonAI(creature);
+            return new npc_dark_matter_algalonAI(creature);
         }
 
-        struct mob_dark_matter_algalonAI : public ScriptedAI
+        struct npc_dark_matter_algalonAI : public ScriptedAI
         {
-            mob_dark_matter_algalonAI(Creature *creature) : ScriptedAI(creature) {}
+            npc_dark_matter_algalonAI(Creature *creature) : ScriptedAI(creature) {}
 
 
             void InitializeAI()
@@ -1141,19 +1141,19 @@ class mob_dark_matter_algalon : public CreatureScript
         };
 };
 
-class mob_algalon_asteroid_trigger : public CreatureScript
+class npc_algalon_asteroid_trigger : public CreatureScript
 {
     public:
-        mob_algalon_asteroid_trigger() : CreatureScript("mob_algalon_asteroid_trigger") { }
+        npc_algalon_asteroid_trigger() : CreatureScript("npc_algalon_asteroid_trigger") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_algalon_asteroid_triggerAI(creature);
+            return new npc_algalon_asteroid_triggerAI(creature);
         }
 
-        struct mob_algalon_asteroid_triggerAI : public PassiveAI
+        struct npc_algalon_asteroid_triggerAI : public PassiveAI
         {
-            mob_algalon_asteroid_triggerAI(Creature *creature) : PassiveAI(creature) {}
+            npc_algalon_asteroid_triggerAI(Creature *creature) : PassiveAI(creature) {}
 
             uint32 Event_Timer;
             uint8 Event_Phase;
@@ -1186,19 +1186,19 @@ class mob_algalon_asteroid_trigger : public CreatureScript
         };
 };
 
-class mob_brann_algalon : public CreatureScript
+class npc_brann_algalon : public CreatureScript
 {
     public:
-        mob_brann_algalon() : CreatureScript("mob_brann_algalon") { }
+        npc_brann_algalon() : CreatureScript("npc_brann_algalon") { }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new mob_brann_algalonAI(creature);
+            return new npc_brann_algalonAI(creature);
         }
 
-        struct mob_brann_algalonAI : public PassiveAI
+        struct npc_brann_algalonAI : public PassiveAI
         {
-            mob_brann_algalonAI(Creature *creature) : PassiveAI(creature) {}
+            npc_brann_algalonAI(Creature *creature) : PassiveAI(creature) {}
 
             uint8 CurrWP;
             uint32 delay;
@@ -1594,12 +1594,12 @@ class achievement_herald_of_the_titans : public AchievementCriteriaScript
 void AddSC_boss_algalon()
 {
     new boss_algalon();
-    new mob_algalon_asteroid_trigger();
-    new mob_collapsing_star();
-    new mob_living_constellation();
-    new mob_black_hole();
-    new mob_dark_matter_algalon();
-    new mob_brann_algalon();
+    new npc_algalon_asteroid_trigger();
+    new npc_collapsing_star();
+    new npc_living_constellation();
+    new npc_black_hole();
+    new npc_dark_matter_algalon();
+    new npc_brann_algalon();
     new spell_algalon_phase_punch();
     new spell_algalon_summon_asteroid_stalkers();
     new spell_algalon_cosmic_smash_damage();
