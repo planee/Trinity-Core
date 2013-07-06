@@ -1843,6 +1843,25 @@ class spell_q6661_catch_mouse : public SpellScriptLoader
         }
 };
 
+// »ŒŒÒ2118 Œ¡“ﬂ¬˚—” part1 
+
+enum Quests2118Data
+{
+    NPC_BEAR                = 2164,
+    NPC_CONTROLLED_BEAR     = 11836
+};
+
+class spell_q2118_The_plague_spread : public SpellScriptLoader
+{
+    public:
+        spell_q2118_The_plague_spread() : SpellScriptLoader("spell_q2118_The_plague_spread") { }
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_generic_quest_update_entry_SpellScript(SPELL_EFFECT_DUMMY, EFFECT_0, NPC_BEAR, NPC_CONTROLLED_BEAR, true);
+        }
+};
+
 void AddSC_quest_spell_scripts()
 {
     new spell_q55_sacred_cleansing();
@@ -1888,4 +1907,5 @@ void AddSC_quest_spell_scripts()
     new spell_q13291_q13292_q13239_q13261_armored_decoy_summon_skytalon();
     new spell_q12847_summon_soul_moveto_bunny();
     new spell_q6661_catch_mouse();
+    new	spell_q2118_The_plague_spread();
 }

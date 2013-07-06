@@ -386,9 +386,88 @@ public:
 
 };
 
+/*####
+# npc_controlled_bear ÎÁÒßÂûÑÓ PART2
+####*/
+
+enum controlled_bear
+{
+    SAY_AT_COMPLETE_QUEST2118         = 0,
+    QUEST_The_plague_spread           = 2118, /*ÎÁÒßÂûÑÓ*/
+    NPC_The_plague_spread             = 3701, /*ÈøÄÉÈð¶÷¡¤ÂÌÊ÷*/
+};
+
+#define GOSSIP_The_plague_spread  "Follow me"
+
+class npc_controlled_bear : public CreatureScript
+{
+public:
+    npc_controlled_bear() : CreatureScript("npc_controlled_bear") { }
+
+    bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)
+    {
+        player->PlayerTalkClass->ClearMenus();
+        if (action == GOSSIP_ACTION_INFO_DEF+1)
+        {
+            player->CLOSE_GOSSIP_MENU();
+
+            if (npc_controlled_bearAI* pThreshAI = CAST_AI(npc_controlled_bear::npc_controlled_bearAI, creature->AI()))
+            {
+                pThreshAI->StartFollow(player);
+            }
+        }
+
+        return true;
+    }
+
+    bool OnGossipHello(Player* player, Creature* creature)
+    {
+        if (player->GetQuestStatus(QUEST_The_plague_spread) == QUEST_STATUS_INCOMPLETE)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_The_plague_spread, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+
+        player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
+        return true;
+    }
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_controlled_bearAI(creature);
+    }
+
+    struct npc_controlled_bearAI : public FollowerAI
+    {
+        npc_controlled_bearAI(Creature* creature) : FollowerAI(creature) { }
+
+        void Reset() { }
+
+        void MoveInLineOfSight(Unit* who)
+        {
+            FollowerAI::MoveInLineOfSight(who);
+
+            if (!me->GetVictim() && !HasFollowState(STATE_FOLLOW_COMPLETE) && who->GetEntry() == NPC_The_plague_spread)
+            {
+                if (me->IsWithinDistInMap(who, 5.0f))
+                {
+                   Talk(SAY_AT_COMPLETE_QUEST2118, who->GetGUID());   
+				   q2118_End();
+
+                }
+            }
+        }
+		void q2118_End() 
+		{	                 
+            Player* player = GetLeaderForFollower();
+            if (player && player->GetQuestStatus(QUEST_The_plague_spread) == QUEST_STATUS_INCOMPLETE)
+            player->GroupEventHappens(QUEST_The_plague_spread, me);
+			SetFollowComplete();
+        }
+    };
+};
+
 void AddSC_darkshore()
 {
     new npc_kerlonian();
     new npc_prospector_remtravel();
     new npc_threshwackonator();
+    new npc_controlled_bear();
 }
