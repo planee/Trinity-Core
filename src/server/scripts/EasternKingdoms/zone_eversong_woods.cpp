@@ -34,6 +34,8 @@ EndContentData */
 #include "ScriptedEscortAI.h"
 #include "Player.h"
 
+//SAI´úÌæ
+/*
 enum UnexpectedResults
 {
     // Quest
@@ -81,7 +83,7 @@ public:
             Summon = false;
         }
 
-        void EnterCombat(Unit* /*who*/)OVERRIDE {}
+        void EnterCombat(Unit* )OVERRIDE {}
 
         void JustSummoned(Creature* summoned) OVERRIDE
         {
@@ -95,14 +97,14 @@ public:
             ++KillCount;
         }
 
-        void JustDied(Unit* /*killer*/) OVERRIDE
+        void JustDied(Unit* ) OVERRIDE
         {
             if (PlayerGUID)
                 if (Player* player = Unit::GetPlayer(*me, PlayerGUID))
                     player->FailQuest(QUEST_UNEXPECTED_RESULT);
         }
 
-        void UpdateAI(uint32 /*diff*/) OVERRIDE
+        void UpdateAI(uint32 ) OVERRIDE
         {
             if (KillCount >= 3 && PlayerGUID)
                 if (Player* player = Unit::GetPlayer(*me, PlayerGUID))
@@ -118,6 +120,7 @@ public:
         }
     };
 };
+*/
 
 /*######
 ## npc_infused_crystal
@@ -241,6 +244,6 @@ public:
 
 void AddSC_eversong_woods()
 {
-    new npc_apprentice_mirveda();
+    /* new npc_apprentice_mirveda();*/ //SAI´úÌæ
     new npc_infused_crystal();
 }
