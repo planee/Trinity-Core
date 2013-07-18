@@ -265,7 +265,7 @@ class boss_xt002 : public CreatureScript
                 if (!UpdateVictim())
                     return;
 
-                //_DoAggroPulse(diff);
+                _DoAggroPulse(diff);
 
                 if (_enterHardMode)
                 {

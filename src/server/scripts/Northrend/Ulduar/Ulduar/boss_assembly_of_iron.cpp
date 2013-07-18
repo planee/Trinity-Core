@@ -961,6 +961,7 @@ class boss_stormcaller_brundir : public CreatureScript
                     return;
 
                 events.Update(diff);
+                _DoAggroPulse(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;

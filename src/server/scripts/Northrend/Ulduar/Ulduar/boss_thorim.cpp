@@ -450,6 +450,7 @@ public:
             }
 
             events.Update(diff);
+            _DoAggroPulse(diff);
             EncounterTime += diff;
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -571,8 +572,8 @@ public:
             if (me->IsInCombat())
                 DoZoneInCombat(summon);
 
-            /*if (summon->GetEntry() == NPC_LIGHTNING_ORB)
-                summon->CastSpell(summon, SPELL_LIGHTNING_DESTRUCTION, true);*/
+            if (summon->GetEntry() == NPC_LIGHTNING_ORB)
+                summon->CastSpell(summon, SPELL_LIGHTNING_DESTRUCTION, true);
         }
 
         void DamageTaken(Unit* attacker, uint32 &damage)
