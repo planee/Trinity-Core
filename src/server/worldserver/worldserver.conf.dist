@@ -2792,27 +2792,86 @@ Log.Async.Enable = 0
 #
 ###################################################################################################
 
+
 ###################################################################################################
 #    Transmogrification config
 ###################################################################################################
 #
-#    GOLD COST
+#    SETTINGS
 #
-#    Transmogrification.RequireGold
-#        Description: 0 No gold cost, 1 scaling gold cost, 2 custom gold cost
+#    Transmogrification.EnableTransmogInfo
+#        Description: Enables / Disables the info button for transmogrification
 #        Default:    1
 #
-#    Transmogrification.GoldModifier
-#        Description: A multiplier for the default gold cost (Transmogrification.RequireGold is 1)
+#    Transmogrification.TransmogNpcText
+#        Description: The npc_text entry of the info menu for transmogrification
+#        Default:    50000
+#
+#    Transmogrification.EnableSetInfo
+#        Description: Enables / Disables the info button for set fature
+#        Default:    1
+#
+#    Transmogrification.SetNpcText
+#        Description: The npc_text entry of the info menu for the set feature
+#        Default:    50001
+#
+#    Transmogrification.Allowed
+#        Description: A list of item entries that are allowed for transmogrification (skips quality and CanUseItem check)
+#					  Example: "25 35674 5623"
+#        Default:    ""
+#
+#    Transmogrification.NotAllowed
+#        Description: A list of item entries that are NOT allowed for transmogrification
+#					  Example: "25 35674 5623"
+#        Default:    ""
+
+Transmogrification.EnableTransmogInfo = 1
+Transmogrification.TransmogNpcText = 50000
+
+Transmogrification.EnableSetInfo = 1
+Transmogrification.SetNpcText = 50001
+
+Transmogrification.Allowed = ""
+Transmogrification.NotAllowed = ""
+
+#
+#    SET FEATURE
+#
+#    Transmogrification.EnableSets
+#        Description: Enables / Disables the set feature. If you want permanent disable, check Transmogrification.h
+#        Default:    1
+#
+#    Transmogrification.MaxSets
+#        Description: Maximum amount of sets a player can save (hardcap at 25)
+#        Default:    10
+#
+#    Transmogrification.SetCostModifier
+#        Description: A multiplier for the default gold cost (all costs summed together) (change to 0 for no default cost)
+#        Default:    3.0
+#
+#    Transmogrification.SetCopperCost
+#        Description: Cost added on top of other costs (can be negative)
+#        Default:    0
+
+Transmogrification.EnableSets = 1
+Transmogrification.MaxSets = 10
+
+Transmogrification.SetCostModifier = 3.0
+Transmogrification.SetCopperCost = 0
+
+#
+#    COPPER COST
+#
+#    Transmogrification.ScaledCostModifier
+#        Description: A multiplier for the default gold cost (change to 0 for no default cost)
 #        Default:    1.0
 #
-#    Transmogrification.GoldCost
-#        Description: Cost of transmogrification in copper for custom gold cost (Transmogrification.RequireGold is 2)
-#        Default:    100000
+#    Transmogrification.CopperCost
+#        Description: Cost added on top of other costs (can be negative)
+#        Default:    0
 
-Transmogrification.RequireGold = 1
-Transmogrification.GoldModifier = 1.0
-Transmogrification.GoldCost = 100000
+Transmogrification.ScaledCostModifier = 1.0
+Transmogrification.CopperCost = 0
 
 #
 #    TOKEN COST
@@ -2834,7 +2893,7 @@ Transmogrification.TokenEntry = 49426
 Transmogrification.TokenAmount = 1
 
 #
-#    QUALITIES
+#    REQUIREMENTS
 #
 #    Transmogrification.AllowPoor
 #        Description: Allow poor quality items to be used as source and target items
@@ -2867,6 +2926,14 @@ Transmogrification.TokenAmount = 1
 #    Transmogrification.AllowHeirloom
 #        Description: Allow heirloom quality items to be used as source and target items
 #        Default:    1
+#
+#    Transmogrification.AllowMixedArmorTypes
+#        Description: Allow cloth items to be transmogrified with plate for example
+#        Default:    0
+#
+#    Transmogrification.AllowMixedWeaponTypes
+#        Description: Allow axe to be transmogrified with dagger for example
+#        Default:    0
 
 Transmogrification.AllowPoor = 0
 Transmogrification.AllowCommon = 0
@@ -2876,6 +2943,9 @@ Transmogrification.AllowEpic = 1
 Transmogrification.AllowLegendary = 0
 Transmogrification.AllowArtifact = 0
 Transmogrification.AllowHeirloom = 1
+
+Transmogrification.AllowMixedArmorTypes = 0
+Transmogrification.AllowMixedWeaponTypes = 0
 
 #
 ###################################################################################################
