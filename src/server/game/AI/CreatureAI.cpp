@@ -166,8 +166,6 @@ void CreatureAI::EnterEvadeMode()
 
     if (me->IsVehicle()) // use the same sequence of addtoworld, aireset may remove all summons!
         me->GetVehicleKit()->Reset(true);
-
-    me->SetLastDamagedTime(0);
 }
 
 /*void CreatureAI::AttackedBy(Unit* attacker)
@@ -237,6 +235,7 @@ bool CreatureAI::_EnterEvadeMode()
     me->LoadCreaturesAddon();
     me->SetLootRecipient(NULL);
     me->ResetPlayerDamageReq();
+    me->SetLastDamagedTime(0);
 
     if (me->IsInEvadeMode())
         return false;
