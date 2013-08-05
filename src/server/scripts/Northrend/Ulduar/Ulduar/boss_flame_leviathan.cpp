@@ -1349,7 +1349,7 @@ class npc_lorekeeper : public CreatureScript
 
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)
         {
-            player->PlayerTalkClass->ClearMenus();
+            player->CLOSE_GOSSIP_MENU();
 
             InstanceScript* instance = creature->GetInstanceScript();
             if (!instance)
