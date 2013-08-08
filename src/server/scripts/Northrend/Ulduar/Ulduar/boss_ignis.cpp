@@ -433,9 +433,8 @@ class spell_ignis_slag_pot : public SpellScriptLoader
 
             bool Validate(SpellInfo const* /*spellEntry*/)
             {
-                if (!sSpellMgr->GetSpellInfo(SPELL_SLAG_POT_DAMAGE))
-                    return false;
-                if (!sSpellMgr->GetSpellInfo(SPELL_SLAG_IMBUED))
+                if (!sSpellMgr->GetSpellInfo(SPELL_SLAG_POT_DAMAGE)
+                    || !sSpellMgr->GetSpellInfo(SPELL_SLAG_IMBUED))
                     return false;
                 return true;
             }
