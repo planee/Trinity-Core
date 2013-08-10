@@ -1950,6 +1950,7 @@ class spell_q13011_bear_flank_master : public SpellScriptLoader
         {
             return new spell_q13011_bear_flank_master_SpellScript();
         }
+};
 
 void AddSC_quest_spell_scripts()
 {
