@@ -65,9 +65,9 @@ enum Spells
 
     // Merory of X (Summon)
     SPELL_MEMORY_ALGALON        = 66715,
-    SPELL_MEMORY_ARCHIMONDE     = 66715,
+    SPELL_MEMORY_ARCHIMONDE     = 66704,
     SPELL_MEMORY_CHROMAGGUS     = 66697,
-    SPELL_MEMORY_CYANIGOSA      = 66697,
+    SPELL_MEMORY_CYANIGOSA      = 66709,
     SPELL_MEMORY_DELRISSA       = 66706,
     SPELL_MEMORY_ECK            = 66710,
     SPELL_MEMORY_ENTROPIUS      = 66707,
@@ -1030,15 +1030,14 @@ uint32 const memorySpellId[25] =
 };
 
 // 66545 - Summon Memory
-class spell_summon_memory : public SpellScriptLoader
+class spell_paletress_summon_memory : public SpellScriptLoader
 {
     public:
-        spell_summon_memory() : SpellScriptLoader("spell_summon_memory") { }
+        spell_paletress_summon_memory() : SpellScriptLoader("spell_paletress_summon_memory") { }
 
-        class spell_summon_memory_SpellScript : public SpellScript
+        class spell_paletress_summon_memory_SpellScript : public SpellScript
         {
-            PrepareSpellScript(spell_summon_memory_SpellScript);
-
+            PrepareSpellScript(spell_paletress_summon_memory_SpellScript);
 
             bool Validate(SpellInfo const* /*spellInfo*/) OVERRIDE
             {
@@ -1068,14 +1067,14 @@ class spell_summon_memory : public SpellScriptLoader
 
             void Register() OVERRIDE
             {
-                OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_summon_memory_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_SRC_AREA_ENEMY);
-                OnEffectHitTarget += SpellEffectFn(spell_summon_memory_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+                OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_paletress_summon_memory_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_SRC_AREA_ENEMY);
+                OnEffectHitTarget += SpellEffectFn(spell_paletress_summon_memory_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
             }
         };
 
         SpellScript* GetSpellScript() const OVERRIDE
         {
-            return new spell_summon_memory_SpellScript();
+            return new spell_paletress_summon_memory_SpellScript();
         }
 };
 
@@ -1086,7 +1085,7 @@ void AddSC_boss_argent_challenge()
     new spell_eadric_hoj();
     new boss_paletress();
     new npc_memory();
-    new spell_summon_memory();
+    new spell_paletress_summon_memory();
     new npc_argent_soldier();
     new spell_gen_reflective_shield();
     new achievement_toc5_argent_challenge("achievement_toc5_paletress", NPC_PALETRESS);
