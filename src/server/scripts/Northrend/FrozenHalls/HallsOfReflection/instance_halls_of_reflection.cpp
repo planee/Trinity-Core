@@ -488,7 +488,7 @@ public:
             return saveStream.str();
         }
 
-        void Load(const char* in)
+        void Load(const char* in) OVERRIDE OVERRIDE
         {
             if (!in)
             {

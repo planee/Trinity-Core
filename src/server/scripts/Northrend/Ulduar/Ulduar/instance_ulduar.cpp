@@ -116,7 +116,7 @@ class instance_ulduar : public InstanceMapScript
             bool conSpeedAtory;
             bool Unbroken;
 
-            void Initialize()
+            void Initialize() OVERRIDE
             {
                 SetBossNumber(MAX_ENCOUNTER);
                 LoadDoorData(doorData);
@@ -204,7 +204,7 @@ class instance_ulduar : public InstanceMapScript
                 }
             }
 
-            bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target = NULL*/, uint32 /*miscvalue1 = 0*/)
+            bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target = NULL*/, uint32 /*miscvalue1 = 0*/) OVERRIDE
             {
                 switch (criteria_id)
                 {
@@ -304,7 +304,7 @@ class instance_ulduar : public InstanceMapScript
                 return false;
             }
 
-            void OnPlayerEnter(Player* player)
+            void OnPlayerEnter(Player* player) OVERRIDE
             {
                 if (!TeamInInstance)
                     TeamInInstance = player->GetTeam();
@@ -317,13 +317,13 @@ class instance_ulduar : public InstanceMapScript
                 }
             }  
 
-            void FillInitialWorldStates(WorldPacket& data)
+            void FillInitialWorldStates(WorldPacket& data) OVERRIDE
             {
                 data << uint32(WORLDSTATE_SHOW_TIMER)            << uint32(SignalTimerState == IN_PROGRESS);
                 data << uint32(WORLDSTATE_ALGALON_TIMER)         << uint32(SignalTimerMinutes ? SignalTimerMinutes : 60);
             }
 		
-            void OnCreatureCreate(Creature* creature)
+            void OnCreatureCreate(Creature* creature) OVERRIDE
             {
                 if (!TeamInInstance)
                 {
@@ -650,7 +650,7 @@ class instance_ulduar : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectRemove(GameObject* gameObject)
+            void OnGameObjectRemove(GameObject* gameObject) OVERRIDE
             {
                 switch (gameObject->GetEntry())
                 {
@@ -687,7 +687,7 @@ class instance_ulduar : public InstanceMapScript
                 }
             }
 
-            void ProcessEvent(WorldObject* /*gameObject*/, uint32 eventId)
+            void ProcessEvent(WorldObject* /*gameObject*/, uint32 eventId) OVERRIDE
             {
                 // Flame Leviathan's Tower Event triggers
                 Creature* FlameLeviathan = instance->GetCreature(LeviathanGUID);
@@ -710,7 +710,7 @@ class instance_ulduar : public InstanceMapScript
             }
 
 
-            bool SetBossState(uint32 type, EncounterState state)
+            bool SetBossState(uint32 type, EncounterState state) OVERRIDE
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
@@ -1022,7 +1022,7 @@ class instance_ulduar : public InstanceMapScript
                 return 0;
             }
 
-            std::string GetSaveData()
+            std::string GetSaveData() OVERRIDE
             {
                 OUT_SAVE_INST_DATA;
 
@@ -1033,7 +1033,7 @@ class instance_ulduar : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(char const* strIn)
+            void Load(char const* strIn) OVERRIDE
             {
                 if (!strIn)
                 {
@@ -1079,7 +1079,7 @@ class instance_ulduar : public InstanceMapScript
 
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
-            void Update(uint32 diff)
+            void Update(uint32 diff) OVERRIDE
             {
                 if (SignalTimerState == IN_PROGRESS)
                 {
