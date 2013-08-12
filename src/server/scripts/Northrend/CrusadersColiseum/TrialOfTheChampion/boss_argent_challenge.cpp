@@ -1059,10 +1059,7 @@ class spell_paletress_summon_memory : public SpellScriptLoader
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {
-                Unit* caster = GetCaster();
-
-                if (Player* target = GetHitPlayer())
-                    caster->CastSpell(target, memorySpellId[urand(0, 24)], true);
+                GetHitUnit()->CastSpell(GetHitUnit(), memorySpellId[urand(0, 24)], true, NULL, NULL, GetCaster()->GetGUID());
             }
 
             void Register() OVERRIDE
