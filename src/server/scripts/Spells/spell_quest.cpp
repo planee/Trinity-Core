@@ -1914,7 +1914,8 @@ class spell_q13011_bear_flank_master : public SpellScriptLoader
 
             bool Validate(SpellInfo const* /*spellInfo*/) OVERRIDE
             {
-                if (!sSpellMgr->GetSpellInfo(SPELL_BEAR_FLANK_MASTER) || !sSpellMgr->GetSpellInfo(SPELL_CREATE_BEAR_FLANK))
+                if (!sSpellMgr->GetSpellInfo(SPELL_BEAR_FLANK_MASTER) ||
+                    !sSpellMgr->GetSpellInfo(SPELL_CREATE_BEAR_FLANK))
                     return false;
                 return true;
             }
@@ -1924,7 +1925,7 @@ class spell_q13011_bear_flank_master : public SpellScriptLoader
                 return GetCaster()->GetTypeId() == TYPEID_UNIT;
             }
 
-            void HandleScript(SpellEffIndex effIndex)
+            void HandleScript(SpellEffIndex /*effIndex*/)
             {
                 bool failed = RAND(0, 1); // 50% chance
                 Creature* creature = GetCaster()->ToCreature();
