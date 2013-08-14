@@ -2989,6 +2989,7 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     // Favored experience increase END
 
     // XP to money conversion processed in Player::RewardQuest
+    if(sWorld->getIntConfig(CONFIG_levelcap) == 1){
     if (level == 60 && !HasAchieved(1283) || level == 60 && !HasAchieved(1285)) {
         ModifyMoney(xp * 0.5);
         return;
@@ -2996,6 +2997,10 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     ModifyMoney(xp * 0.5);
         return;
     } else if (level >= sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)) {
+        return;
+    }
+    } else {
+    if (level >= sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
         return;
     }
 

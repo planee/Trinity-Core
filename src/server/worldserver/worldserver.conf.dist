@@ -3217,3 +3217,5 @@ AuctionHouseBot.DisableItemsBelowReqSkillRank = 0
 AuctionHouseBot.DisableItemsAboveReqSkillRank = 0
 AuctionHouseBot.DisableTGsBelowReqSkillRank = 0
 AuctionHouseBot.DisableTGsAboveReqSkillRank = 0
+
+config.levelcap = 1
