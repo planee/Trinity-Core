@@ -25,7 +25,10 @@
 #include "CombatAI.h"
 #include "Cell.h"
 #include "CellImpl.h"
+#include "Cell.h"
+#include "CellImpl.h"
 #include "GridNotifiers.h"
+#include "GridNotifiersImpl.h"
 #include "GridNotifiersImpl.h"
 
 enum DeathKnightSpells
