@@ -210,7 +210,7 @@ public:
         void JustDied(Unit* /*killer*/) OVERRIDE
         {
             if (PlayerGUID && !Completed)
-                if (Player* player = Unit::GetPlayer(*me, PlayerGUID))
+                if (Player* player = ObjectAccessor::GetPlayer(*me, PlayerGUID))
                     player->FailQuest(QUEST_POWERING_OUR_DEFENSES);
         }
 
@@ -221,7 +221,7 @@ public:
                 Talk(EMOTE);
                 Completed = true;
                 if (PlayerGUID)
-                    if (Player* player = Unit::GetPlayer(*me, PlayerGUID))
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, PlayerGUID))
                         player->CompleteQuest(QUEST_POWERING_OUR_DEFENSES);
 
                 me->DealDamage(me, me->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
