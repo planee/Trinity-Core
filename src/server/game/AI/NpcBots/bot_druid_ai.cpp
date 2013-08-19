@@ -354,6 +354,12 @@ public:
         void UpdateAI(uint32 diff)
         {
             ReduceCD(diff);
+            if (91109 && GC_Timer <= diff && !me->HasAura(91109) && 
+                doCast(me, 91109))
+            
+            if (91111 && GC_Timer <= diff && !me->HasAura(91111) && 
+                doCast(me, 91111))
+                
             if ((me->GetShapeshiftForm() == FORM_DIREBEAR || me->GetShapeshiftForm() == FORM_BEAR) && 
                 me->getPowerType() != POWER_RAGE)
                 me->setPowerType(POWER_RAGE);
@@ -368,7 +374,7 @@ public:
                 me->GetShapeshiftForm() == FORM_BEAR ||
                 me->GetShapeshiftForm() == FORM_CAT)
                 DoMeleeAttackIfReady();
-
+                
             if (me->GetShapeshiftForm() == FORM_DIREBEAR || me->GetShapeshiftForm() == FORM_BEAR)
             {
                 rage = me->GetPower(POWER_RAGE);

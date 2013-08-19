@@ -139,9 +139,16 @@ public:
         void UpdateAI(uint32 diff)
         {
             ReduceCD(diff);
+            if (91109 && GC_Timer <= diff && !me->HasAura(91109) && 
+                doCast(me, 91109))
+            
+            if (91111 && GC_Timer <= diff && !me->HasAura(91111) && 
+                doCast(me, 91111))
+                
             if (IAmDead()) return;
             if (!me->GetVictim())
                 Evade();
+                
             if (clearcast && me->HasAura(CLEARCASTBUFF) && !me->IsNonMeleeSpellCasted(false))
             {
                 me->ModifyPower(POWER_MANA, cost);

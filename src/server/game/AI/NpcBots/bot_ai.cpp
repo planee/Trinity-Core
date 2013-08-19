@@ -2928,8 +2928,8 @@ bool bot_minion_ai::OnGossipHello(Player* player, Creature* creature)
                 player->CLOSE_GOSSIP_MENU();
                 break;
             }
-            player->ADD_GOSSIP_ITEM(0, "我需要食物", 6001, GOSSIP_ACTION_INFO_DEF + 1);
-            player->ADD_GOSSIP_ITEM(0, "我需要饮料", 6001, GOSSIP_ACTION_INFO_DEF + 2);
+            player->ADD_GOSSIP_ITEM(0, "我需要食物.", 6001, GOSSIP_ACTION_INFO_DEF + 1);
+            player->ADD_GOSSIP_ITEM(0, "我需要饮料.", 6001, GOSSIP_ACTION_INFO_DEF + 2);
             player->PlayerTalkClass->SendGossipMenu(GOSSIP_SERVE_MASTER, creature->GetGUID());
             break;
         default:

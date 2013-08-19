@@ -340,6 +340,12 @@ public:
         void UpdateAI(uint32 diff)
         {
             ReduceCD(diff);
+            if (91109 && GC_Timer <= diff && !me->HasAura(91109) && 
+                doCast(me, 91109))
+            
+            if (91111 && GC_Timer <= diff && !me->HasAura(91111) && 
+                doCast(me, 91111))
+                
             if (HOFGuid != 0)
             {
                 if (Unit* ally = sObjectAccessor->FindUnit(HOFGuid))
@@ -360,7 +366,7 @@ public:
             BreakCC(diff);
             //HOFTarget(me, diff);//self stun cure goes FIRST
             if (CCed(me)) return;
-
+                
             if (GetManaPCT(me) < 30 && Potion_cd <= diff)
             {
                 temptimer = GC_Timer;
@@ -394,7 +400,7 @@ public:
             if (SEAL_OF_COMMAND && GC_Timer <= diff && !me->HasAura(SEAL_OF_COMMAND) && 
                 doCast(me, SEAL_OF_COMMAND))
                 GC_Timer = 500;
-
+                
             // Heal myself
             if (GetHealthPCT(me) < 80)
                 HealTarget(me, GetHealthPCT(me), diff);

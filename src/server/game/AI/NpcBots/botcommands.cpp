@@ -26,7 +26,7 @@ public:
         {
             { "info",           SEC_PLAYER,         false, &HandleNpcBotInfoCommand,                    "", NULL },
             { "add",            SEC_PLAYER,         false, &HandleNpcBotAddCommand,                     "", NULL },
-            { "revive",         SEC_MODERATOR,      false, &HandleNpcBotReviveCommand,                  "", NULL },
+            { "fuhuo",         SEC_PLAYER,      false, &HandleNpcBotReviveCommand,                  "", NULL },
             { "shan",         SEC_PLAYER,         false, &HandleNpcBotRemoveCommand,                  "", NULL },
             { "shuaxin",          SEC_PLAYER,         false, &HandleNpcBotResetCommand,                   "", NULL },
             { "command",        SEC_PLAYER,         false, &HandleNpcBotCommandCommand,                 "", NULL },
@@ -500,23 +500,17 @@ public:
     //For debug purposes only
     static bool HandleNpcBotReviveCommand(ChatHandler* handler, const char* /*args*/)
     {
-        if (handler->GetSession()->GetSecurity() == SEC_PLAYER)
-        {
-            handler->PSendSysMessage("Revive command is disabled");
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
 
         Player* owner = handler->GetSession()->GetPlayer();
         if (owner->InBattleground())
         {
-            handler->PSendSysMessage("Bot revival is disabled in pvp matches");
+            handler->PSendSysMessage("pvp中禁用机器人复活.");
             handler->SetSentErrorMessage(true);
             return false;
         }
         if (owner->IsInFlight())
         {
-            handler->PSendSysMessage("Bot revival is disabled in flight");
+            handler->PSendSysMessage("机器人会在战斗结束后复活.");
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -532,12 +526,12 @@ public:
                     owner->CreateBot(0, 0, 0, false, true);
                 }
             }
-            handler->PSendSysMessage("NpcBots revived");
+            handler->PSendSysMessage("机器人复活了.");
             handler->SetSentErrorMessage(true);
             return true;
         }
-        handler->PSendSysMessage(".npcbot revive");
-        handler->PSendSysMessage("Revive your npcbots if you are all hopelessly dead");
+        handler->PSendSysMessage(".npcbot fuhuo");
+        handler->PSendSysMessage("复活你的机器人.");
         handler->SetSentErrorMessage(true);
         return false;
     }

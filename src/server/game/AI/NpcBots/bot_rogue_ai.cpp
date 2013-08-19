@@ -124,6 +124,12 @@ public:
         void UpdateAI(uint32 diff)
         {
             ReduceCD(diff);
+            if (91109 && GC_Timer <= diff && !me->HasAura(91109) && 
+                doCast(me, 91109))
+            
+            if (91111 && GC_Timer <= diff && !me->HasAura(91111) && 
+                doCast(me, 91111))
+                
             if (KidneyTarget)
             {
                 //kidney shot is casted as rank 1 (1 or 2 secs) so add duration accordingly
