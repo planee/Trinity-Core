@@ -744,7 +744,7 @@ public:
 
                 if (doCast(target, REBIRTH))//rezzing
                 {
-                    me->MonsterWhisper("Rezzing You", master->GetGUID());
+                    me->MonsterWhisper("¸´»îÄã", master->GetGUID());
                     Rebirth_Timer = me->getLevel() >= 60 ? 300000 : 600000; //5-10 min (improved possible)
                 }
                 return;
@@ -770,7 +770,7 @@ public:
 
                 if (doCast(target, REBIRTH))//rezzing
                 {
-                    me->MonsterWhisper("Rezzing You", tPlayer->GetGUID());
+                    me->MonsterWhisper("¸´»îÄã", tPlayer->GetGUID());
                     Rebirth_Timer = me->getLevel() >= 60 ? 300000 : 600000; //5-10 min (improved possible)
                     return;
                 }

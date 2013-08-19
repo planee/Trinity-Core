@@ -541,7 +541,7 @@ void bot_minion_ai::RezGroup(uint32 REZZ, Player* gPlayer)
 
         if (doCast(target, REZZ))//rezzing it
         {
-            me->MonsterWhisper("Rezzing You", tPlayer->GetGUID());
+            me->MonsterWhisper("复活你", tPlayer->GetGUID());
             if (tPlayer != master)
             {
                 std::string rezstr = "Rezzing ";
@@ -1344,7 +1344,7 @@ void bot_ai::ReceiveEmote(Player* player, uint32 emote)
                 return;
             }
             SetBotCommandState(COMMAND_STAY);
-            me->MonsterWhisper("Standing Still.", player->GetGUID());
+            me->MonsterWhisper("原地待命.", player->GetGUID());
             break;
         case TEXT_EMOTE_WAVE:
             if (!IsMinionAI())
@@ -1355,7 +1355,7 @@ void bot_ai::ReceiveEmote(Player* player, uint32 emote)
                 return;
             }
             SetBotCommandState(COMMAND_FOLLOW, true);
-            me->MonsterWhisper("Following!", player->GetGUID());
+            me->MonsterWhisper("跟着你了!", player->GetGUID());
             break;
         default:
             break;
@@ -2928,8 +2928,8 @@ bool bot_minion_ai::OnGossipHello(Player* player, Creature* creature)
                 player->CLOSE_GOSSIP_MENU();
                 break;
             }
-            player->ADD_GOSSIP_ITEM(0, "I need food", 6001, GOSSIP_ACTION_INFO_DEF + 1);
-            player->ADD_GOSSIP_ITEM(0, "I need drink", 6001, GOSSIP_ACTION_INFO_DEF + 2);
+            player->ADD_GOSSIP_ITEM(0, "我需要食物", 6001, GOSSIP_ACTION_INFO_DEF + 1);
+            player->ADD_GOSSIP_ITEM(0, "我需要饮料", 6001, GOSSIP_ACTION_INFO_DEF + 2);
             player->PlayerTalkClass->SendGossipMenu(GOSSIP_SERVE_MASTER, creature->GetGUID());
             break;
         default:
@@ -2945,7 +2945,7 @@ bool bot_minion_ai::OnGossipSelect(Player* player, Creature* creature, uint32 se
     if (!IsInBotParty(player))
     {
         player->CLOSE_GOSSIP_MENU();
-        creature->MonsterWhisper("Get away from me!", player->GetGUID());
+        creature->MonsterWhisper("离我远点!", player->GetGUID());
         return false;
     }
     switch (creature->GetBotClass())
@@ -2994,14 +2994,14 @@ bool bot_minion_ai::OnGossipSelect(Player* player, Creature* creature, uint32 se
                     {
                         foodspell->finish(false);
                         delete foodspell;
-                        creature->MonsterWhisper("I can't do it right now", player->GetGUID());
+                        creature->MonsterWhisper("我现在还不能这么做", player->GetGUID());
                         //creature->SendPetCastFail(food, result);
                     }
                     else
                     {
                         aftercastTargetGuid = player->GetGUID();
                         foodspell->prepare(&targets);
-                        creature->MonsterWhisper("Here you go...", player->GetGUID());
+                        creature->MonsterWhisper("给你...", player->GetGUID());
                     }
                     break;
                 }
@@ -3024,7 +3024,7 @@ void bot_minion_ai::SummonBotsPet(uint32 entry)
     if (!originalentry)
     {
         //annoy master
-        me->MonsterWhisper("Why am I trying to summon unknown pet!?", master->GetGUID());
+        me->MonsterWhisper("我正在尽力召唤宠物!?", master->GetGUID());
         return;
     }
     uint32 armor = 0;
@@ -3034,7 +3034,7 @@ void bot_minion_ai::SummonBotsPet(uint32 entry)
 
     if (!m_botsPet)
     {
-        me->MonsterWhisper("Failed to summon pet!", master->GetGUID());
+        me->MonsterWhisper("召唤宠物失败!", master->GetGUID());
         return;
     }
 
